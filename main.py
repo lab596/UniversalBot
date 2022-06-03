@@ -20,10 +20,15 @@ async def on_message(message):
   value = randint(0,6)
 
 
+  if message.author.id == 758509998459977768:
+    await message.channel.send("Bro stop talking.")
+    await message.channel.send("No one asked.")
+  
   if message.author == client.user:
-    print("I have spoken.")
+    #print("I have spoken.")
+    return
 
-  if message.content.startswith("\hello"):
+  if message.content.startswith("\hello") and not(message.author.id == 758509998459977768):
     
     if value == 0:
       await message.channel.send("Hi.")

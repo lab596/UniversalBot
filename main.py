@@ -1,14 +1,27 @@
 
 import discord
+import praw
 import os
+import random
+
+
 
 
 client = discord.Client()
+
+reddit = praw.Reddit(client_id = "YaPJsXKF1TYThaLys7xnSg",
+                     client_secret= os.environ['SEC'],
+                     username="DaT1dUdE05",
+                     password= os.environ['PASS'],
+                     user_agent="pythonmeme",
+                     check_for_async=False
+                    )
 
 @client.event
 async def on_ready():
   print("We have logged in as {0.user}".format(client))
   print("Hello Sir, I am ready")
+
 
 
 
@@ -51,7 +64,54 @@ async def on_message(message):
     if value == 6:
       await message.channel.send("Yo.")
 
-client.run(os.environ['TOKEN'])
+  if message.content.startswith("\dadjoke"):
+    subredditd = reddit.subreddit("dadjokes")
+    all_subs= []
+    top = subredditd.hot(limit = 50)
+    
+    for submission in top:
+      all_subs.append(submission)
+    
+    random_sub = random.choice(all_subs)
+    
+    name = random_sub.title
+    body = random_sub.selftext
+    #em = discord.Embed(title = name)
+    #em = discord.Embed(selftext = body)
+    
+    
+    
+    await message.channel.send(name)
+    await message.channel.send(body)
+    
+
+  if message.content.startswith("\meme"):
+    all_subred = []
+    subreddit1 = reddit.subreddit("dankmemes")
+    subreddit2 = reddit.subreddit("meme")
+    all_subred.append(subreddit1)
+    all_subred.append(subreddit2)
+    subreddit = random.choice(all_subred)
+    all_subs= []
+    top = subreddit.hot(limit = 50)
+    
+    for submission in top:
+      all_subs.append(submission)
+    
+    random_sub = random.choice(all_subs)
+    
+    name = random_sub.title
+    url = random_sub.url
+    em = discord.Embed(title = name)
+    
+    em.set_image(url = url)
+    
+    await message.channel.send(embed = em)
+  
+    
+    
+
+client.run(os.getenv('TOKEN'))
 
       
     

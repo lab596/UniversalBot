@@ -5,6 +5,7 @@ import os
 import random
 from random import randint
 import urllib.parse, urllib.request, re
+import json
 
 
 
@@ -19,20 +20,16 @@ reddit = praw.Reddit(client_id = "YaPJsXKF1TYThaLys7xnSg",
                      check_for_async=False
                     )
 
+
+
 @client.event
 async def on_ready():
   print("We have logged in as {0.user}".format(client))
   print("Hello Sir, I am ready")
 
 
-
-
 @client.event
 async def on_message(message):
-
-  
-
-
 
 
   if message.author.id == 758509998459977768:
@@ -67,7 +64,7 @@ async def on_message(message):
     if value == 6:
       await message.channel.send("Yo.")
 
-  if message.content.startswith('$rquery!'):
+  if message.content.startswith('*rquery!'):
       command = message.content
       search = command[8:len(command)]
    
@@ -138,7 +135,7 @@ async def on_message(message):
     await message.channel.send(embed = em)
 
 
-  if message.content.startswith("$yquery!"):
+  if message.content.startswith("*yquery!"):
     command = message.content
     search = command[8:len(command)]
     #print(search)
@@ -165,18 +162,45 @@ async def on_message(message):
         await message.channel.send(str(c)+") "+'<http://www.youtube.com'+top_res[c-1]+">")
       j-=1
       c+=1
+
+  if message.content.startswith("$balance"):
+    author = message.author
+    await open_account(author)
+    users = await get_bank_data()
+    wallet_amt = users[str(author.id)]["wallet"]
+    bank_amt = users[str(author.id)]["bank"]
+    
+    em = discord.Embed(title = f"{author.name}'s balance",color = discord.Color.red())
+    em.add_field(name = "Wallet balance", value = wallet_amt)
+    em.add_field(name = "Bank balance", value = bank_amt)
+    await message.channel.send(embed = em)
+    
+
+
+  
     
     #await message.channel.send('http://www.youtube.com'+search_results[0])
 
     
 
     
-    
+async def open_account(user):
+  users = await get_bank_data()
 
-      
-  
-    
-    
+  if str(user.id) in users:
+    return False
+  else:
+    users[str(user.id)]["wallet"]= 5
+    users[str(user.id)]["bank"]= 10
+
+  with open("bank.json","w") as f:
+    json.dump(users,f)
+    return True
+
+async def get_bank_data():
+  with open("bank.json","r") as f:
+    users = json.load(f)
+  return users
 
 client.run(os.getenv('TOKEN'))
 

@@ -3,6 +3,7 @@ import discord
 import praw
 import os
 import random
+import urllib.parse, urllib.request, re
 
 
 
@@ -107,6 +108,39 @@ async def on_message(message):
     em.set_image(url = url)
     
     await message.channel.send(embed = em)
+
+  if message.content.startswith("\yquery!"):
+    command = message.content
+    search = command[8:len(command)]
+    #print(search)
+    query_string = urllib.parse.urlencode({
+      'search_query': search
+    })
+    #print(query_string)
+    htm_content = urllib.request.urlopen(
+      'http://www.youtube.com/results?' + query_string
+    )
+    #print(htm_content)
+    search_content=htm_content.read().decode()
+    search_results = re.findall(r'\/watch\?v=\w+',search_content)
+    top_res = []
+    for i in search_results:
+      top_res.append(i)
+    c = 1
+    j=5
+    await message.channel.send("Top 5 results:")
+    while j > 0:
+      if c == 1: 
+        await message.channel.send(str(c)+") "+'http://www.youtube.com'+top_res[c-1])
+      else:
+        await message.channel.send(str(c)+") "+'<http://www.youtube.com'+top_res[c-1]+">")
+      j-=1
+      c+=1
+    
+    #await message.channel.send('http://www.youtube.com'+search_results[0])
+    
+
+      
   
     
     

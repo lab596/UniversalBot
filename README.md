@@ -17,5 +17,9 @@ Coded in *replit.com*
    - Action: Uses reddit api and refrences *dankmemes (r/dankmemes)* or *meme (r/meme)* (randomly chooses one each time) subreddit to randomly pull one of the fifty popular posts.
   
 * 🎞 Youtube Search 🎞
-   - Keyword: "\yquery!(search)"
+   - Keyword: "$yquery!(search)"
    - Action: Refrences youtube.com and searches what is inputed. Outputs top five videos that show up as a result of that search.
+
+* 👹 Reddit Search 👹
+   - Keyword: "$rquery!(search)"
+   - Action: Refrences reddit.com and searches what is inputed. Outputs top three of the top posts that show up as a result of that search. Additionally it provides a link to that subreddit.

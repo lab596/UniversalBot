@@ -3,6 +3,7 @@ import discord
 import praw
 import os
 import random
+from random import randint
 import urllib.parse, urllib.request, re
 
 
@@ -29,9 +30,9 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-  from random import randint
+  
 
-  value = randint(0,6)
+
 
 
   if message.author.id == 758509998459977768:
@@ -43,6 +44,7 @@ async def on_message(message):
     return
 
   if message.content.startswith("\hello") and not(message.author.id == 758509998459977768):
+    value = randint(0,6)
     
     if value == 0:
       await message.channel.send("Hi.")
@@ -64,6 +66,32 @@ async def on_message(message):
       
     if value == 6:
       await message.channel.send("Yo.")
+
+  if message.content.startswith('$rquery!'):
+      command = message.content
+      search = command[8:len(command)]
+   
+      subreddit = reddit.subreddit(search)
+  
+      all_subs= []
+      top = subreddit.hot(limit = 3)
+      
+      for submission in top:
+        all_subs.append(submission)
+      
+      
+      i=0
+      await message.channel.send("Top posts:")
+      while i < 3: 
+        name = all_subs[i].title
+        url = all_subs[i].url
+        em = discord.Embed(title = name)
+        
+        em.set_image(url = url)
+        
+        await message.channel.send(embed = em)
+        i+=1
+      await message.channel.send("https://www.reddit.com/r/"+search+"/")
 
   if message.content.startswith("\dadjoke"):
     subredditd = reddit.subreddit("dadjokes")
@@ -109,7 +137,8 @@ async def on_message(message):
     
     await message.channel.send(embed = em)
 
-  if message.content.startswith("\yquery!"):
+
+  if message.content.startswith("$yquery!"):
     command = message.content
     search = command[8:len(command)]
     #print(search)
@@ -138,6 +167,10 @@ async def on_message(message):
       c+=1
     
     #await message.channel.send('http://www.youtube.com'+search_results[0])
+
+    
+
+    
     
 
       

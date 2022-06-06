@@ -170,37 +170,55 @@ async def on_message(message):
     wallet_amt = users[str(author.id)]["wallet"]
     bank_amt = users[str(author.id)]["bank"]
     
-    em = discord.Embed(title = f"{author.name}'s balance",color = discord.Color.red())
+    em = discord.Embed(title = f"{author.name}'s balance",color = discord.Color.green())
     em.add_field(name = "Wallet balance", value = wallet_amt)
     em.add_field(name = "Bank balance", value = bank_amt)
     await message.channel.send(embed = em)
     
+  if message.content.startswith("$funds!"):
+    if message.author.guild_permissions.administrator:
+      command = message.content
+      amt = command[7:len(command)]
+      author = message.author
+      await open_account(author)
+      users = await get_bank_data()
+      earnings = int(amt)
 
+      users[str(author.id)]["wallet"] += earnings
 
-  
+      with open("bank.json","w") as f:
+        json.dump(users,f)
+      
+      await message.channel.send("Funds updated.")             
+      
+    else:
+      await message.channel.send("Sorry, you are not authorized to use this command.")
     
-    #await message.channel.send('http://www.youtube.com'+search_results[0])
+                                
 
-    
 
     
 async def open_account(user):
-  users = await get_bank_data()
+  with open("bank.json","r") as f:
+    users = json.load(f)
 
   if str(user.id) in users:
     return False
   else:
+    users[str(user.id)] = {}
     users[str(user.id)]["wallet"]= 5
     users[str(user.id)]["bank"]= 10
 
   with open("bank.json","w") as f:
     json.dump(users,f)
-    return True
+  return True
 
 async def get_bank_data():
   with open("bank.json","r") as f:
     users = json.load(f)
   return users
+
+
 
 client.run(os.getenv('TOKEN'))
 

@@ -168,8 +168,14 @@ async def on_message(message):
     author = message.author
     await open_account(author)
     users = await get_bank_data()
-    wallet_amt = users[str(author.id)]["wallet"]
-    bank_amt = users[str(author.id)]["bank"]
+    for i in users:
+      vals = i.keys()
+      for x in vals:
+        if x == str(author.id):
+          wallet_amt = i[x]["wallet"]
+          bank_amt = i[x]["bank"]
+    #wallet_amt = users[str(author.id)]["wallet"]
+    #bank_amt = users[str(author.id)]["bank"]
     
     em = discord.Embed(title = f"{author.name}'s balance",color = discord.Color.green())
     em.add_field(name = "Wallet balance", value = wallet_amt)
@@ -188,11 +194,22 @@ async def on_message(message):
       users = await get_bank_data()
       earnings = int(amt)
 
-      users[str(author.id)]["wallet"] += earnings
+      
+      for i in users:
+        vals = i.keys()
+        for x in vals:
+          if x == str(author.id):
+            wallet_amt = i[x]["wallet"]
+            wallet_amt += earnings
+            print(wallet_amt)
+            i[x]["wallet"]=wallet_amt
 
-      write_json(users)
-      #with open("bank.json","w") as f:
-        #json.dump(users,f)
+
+              
+            
+          #users[str(author.id)]["wallet"] += earnings
+
+      #write_json(users)
       
       await message.channel.send("Funds updated.")             
       
@@ -217,7 +234,7 @@ async def on_message(message):
 
 def write_json(new_data, filename='bank.json'):
     with open(filename,'r+') as file:
-          # First we load existing data into a dict.
+        # First we load existing data into a dict.
         file_data = json.load(file)
         # Join new_data with file_data inside emp_details
         file_data["bank_details"].append(new_data)
@@ -231,11 +248,12 @@ def write_json(new_data, filename='bank.json'):
     
 async def open_account(user):
   with open("bank.json","r") as f:
-    users = json.load(f)
+    users = json.load(f)['bank_details']
 
   if str(user.id) in users:
     return False
   else:
+    users = {}
     users[str(user.id)] = {}
     users[str(user.id)]["wallet"]= 5
     users[str(user.id)]["bank"]= 10
@@ -246,7 +264,7 @@ async def open_account(user):
 
 async def get_bank_data():
   with open("bank.json","r") as f:
-    users = json.load(f)
+    users = json.load(f)['bank_details']
   return users
 
 

@@ -6,6 +6,7 @@ import random
 from random import randint
 import urllib.parse, urllib.request, re
 import json
+import heapq
 
 
 
@@ -32,9 +33,9 @@ async def on_ready():
 async def on_message(message):
 
 
-  if message.author.id == 758509998459977768:
-    await message.channel.send("Bro stop talking.")
-    await message.channel.send("No one asked.")
+  #if message.author.id == 758509998459977768:
+    #await message.channel.send("Bro stop talking.")
+    #await message.channel.send("No one asked.")
   
   if message.author == client.user:
     #print("I have spoken.")
@@ -174,6 +175,9 @@ async def on_message(message):
     em.add_field(name = "Wallet balance", value = wallet_amt)
     em.add_field(name = "Bank balance", value = bank_amt)
     await message.channel.send(embed = em)
+
+
+
     
   if message.content.startswith("$funds!"):
     if message.author.guild_permissions.administrator:
@@ -186,15 +190,42 @@ async def on_message(message):
 
       users[str(author.id)]["wallet"] += earnings
 
-      with open("bank.json","w") as f:
-        json.dump(users,f)
+      write_json(users)
+      #with open("bank.json","w") as f:
+        #json.dump(users,f)
       
       await message.channel.send("Funds updated.")             
       
     else:
       await message.channel.send("Sorry, you are not authorized to use this command.")
+
+  if message.content.startswith("$transfer!"):
     
-                                
+    with open("bank.json") as jsonFile:
+      data = json.load(jsonFile)
+      jsonData = data
+      for x in jsonData:
+          keys = x.keys()
+          print(keys)
+      key = []
+      for val in keys:
+        key.append(val)
+
+      print(key)
+      
+
+
+def write_json(new_data, filename='bank.json'):
+    with open(filename,'r+') as file:
+          # First we load existing data into a dict.
+        file_data = json.load(file)
+        # Join new_data with file_data inside emp_details
+        file_data["bank_details"].append(new_data)
+        # Sets file's current position at offset.
+        file.seek(0)
+        # convert back to json.
+        json.dump(file_data, file, indent = 4)
+
 
 
     
@@ -208,9 +239,9 @@ async def open_account(user):
     users[str(user.id)] = {}
     users[str(user.id)]["wallet"]= 5
     users[str(user.id)]["bank"]= 10
-
-  with open("bank.json","w") as f:
-    json.dump(users,f)
+   
+    write_json(users)
+  
   return True
 
 async def get_bank_data():
@@ -221,6 +252,10 @@ async def get_bank_data():
 
 
 client.run(os.getenv('TOKEN'))
+
+#{"bank_details": [
+  
+#]}
 
       
     

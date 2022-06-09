@@ -192,20 +192,23 @@ async def on_message(message):
       #await open_account(author)
       #users = await get_bank_data()
       earnings = int(amt)
-
+      count = 0
       f=open("bank.json",'r+')
       data = json.load(f)
-      print(data)
-      print(data['bank_details'])
+      #print(data)
+      #print(data['bank_details'])
       for i in data['bank_details']:
-        print(i[str(author.id)])
-        print(i[str(author.id)]['wallet'])
-        i[str(author.id)]['wallet']+=earnings
+        #print(i)
+        #print(i[str(author.id)])
+        #print(i[str(author.id)]['wallet'])
+        if count == 0:
+          i[str(author.id)]['wallet']+=earnings
+          count+=1
 
       with open("bank.json",'w') as o:
         json.dump(data,o)
       #json.write(data)
-      print(data)
+      #print(data)
       #json.dump(data,f)
       
  

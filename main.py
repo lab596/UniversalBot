@@ -190,29 +190,33 @@ async def on_message(message):
       amt = command[7:len(command)]
       author = message.author
       #await open_account(author)
-      users = await get_bank_data()
+      #users = await get_bank_data()
       earnings = int(amt)
 
-      f=open("bank.json")
+      f=open("bank.json",'r+')
       data = json.load(f)
       print(data)
-      
-      for i in users:
-        vals = i.keys()
-        for x in vals:
-          if x == str(author.id):
-            print("Passed id check")
-            data[i[x]["wallet"]] = i[x]["wallet"] + earnings
-            print(i[x]["wallet"])
-      
+      print(data['bank_details'])
+      for i in data['bank_details']:
+        print(i[str(author.id)])
+        print(i[str(author.id)]['wallet'])
+        i[str(author.id)]['wallet']+=earnings
 
-
-
+      open("bank.json",'w').close
       print(data)
-      #for key_for_user in users.keys():
-        #for wallet_key in users[key_for_user][0].keys():
-          #users[key_for_user][0][wallet_key]["wallet"]=users[key_for_user][0][wallet_key]["wallet"]+earnings
-      #print(data)
+      json.dump(data,f)
+      
+ 
+      #for i in users:
+        #vals = i.keys()
+        #for x in vals:
+          #if x == str(author.id):
+            #print("Passed id check")
+            #data[i[x]["wallet"]] = i[x]["wallet"] + earnings
+      
+
+
+
 
               
             
@@ -250,7 +254,7 @@ def write_json(new_data, filename='bank.json'):
         # Sets file's current position at offset.
         file.seek(0)
         # convert back to json.
-        json.dump(file_data, file, indent = 4)
+        json.dump(file_data, file)
 
 
 
@@ -258,9 +262,11 @@ def write_json(new_data, filename='bank.json'):
 async def open_account(user):
   with open("bank.json","r") as f:
     users = json.load(f)['bank_details']
-
-  if str(user.id) in users:
-    return False
+  for i in users:
+    vals = i.keys()
+    for x in vals:
+      if x == str(user.id):
+        return False
   else:
     users = {}
     users[str(user.id)] = {}

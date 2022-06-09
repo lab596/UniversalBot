@@ -202,9 +202,11 @@ async def on_message(message):
         print(i[str(author.id)]['wallet'])
         i[str(author.id)]['wallet']+=earnings
 
-      open("bank.json",'w').close
+      with open("bank.json",'w') as o:
+        json.dump(data,o)
+      #json.write(data)
       print(data)
-      json.dump(data,f)
+      #json.dump(data,f)
       
  
       #for i in users:

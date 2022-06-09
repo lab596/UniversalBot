@@ -6,7 +6,6 @@ import random
 from random import randint
 import urllib.parse, urllib.request, re
 import json
-import heapq
 
 
 
@@ -190,20 +189,30 @@ async def on_message(message):
       command = message.content
       amt = command[7:len(command)]
       author = message.author
-      await open_account(author)
+      #await open_account(author)
       users = await get_bank_data()
       earnings = int(amt)
 
+      f=open("bank.json")
+      data = json.load(f)
+      print(data)
       
       for i in users:
         vals = i.keys()
         for x in vals:
           if x == str(author.id):
-            wallet_amt = i[x]["wallet"]
-            wallet_amt += earnings
-            print(wallet_amt)
-            i[x]["wallet"]=wallet_amt
+            print("Passed id check")
+            data[i[x]["wallet"]] = i[x]["wallet"] + earnings
+            print(i[x]["wallet"])
+      
 
+
+
+      print(data)
+      #for key_for_user in users.keys():
+        #for wallet_key in users[key_for_user][0].keys():
+          #users[key_for_user][0][wallet_key]["wallet"]=users[key_for_user][0][wallet_key]["wallet"]+earnings
+      #print(data)
 
               
             

@@ -234,19 +234,16 @@ async def on_message(message):
     else:
       await message.channel.send("Sorry, you are not authorized to use this command.")
 
-  if message.content.startswith("$transfer!"):
+  if "$transfer!" in message.content:
+    command = message.content
+    user = command.split("$")
+    usera = user[0]
+    amt = command.split("!")
+    amta = amt[1]
+    print(usera)
+    print(amta)
     
-    with open("bank.json") as jsonFile:
-      data = json.load(jsonFile)
-      jsonData = data
-      for x in jsonData:
-          keys = x.keys()
-          print(keys)
-      key = []
-      for val in keys:
-        key.append(val)
 
-      print(key)
       
 
 

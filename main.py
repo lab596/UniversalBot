@@ -8,9 +8,9 @@ import urllib.parse, urllib.request, re
 import json
 
 
-
-
-client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+client = discord.Client(intents=intents)
 
 reddit = praw.Reddit(client_id = "YaPJsXKF1TYThaLys7xnSg",
                      client_secret= os.environ['SEC'],
@@ -236,12 +236,44 @@ async def on_message(message):
 
   if "$transfer!" in message.content:
     command = message.content
+    author = message.author
     user = command.split("$")
     usera = user[0]
     amt = command.split("!")
     amta = amt[1]
-    print(usera)
-    print(amta)
+    if not(message.author.guild_permissions.administrator) and int(amta) < 0:
+      await message.channel.send("You are not authorized to take money.")
+      return
+    users = await get_bank_data()
+    for i in users:
+      vals = i.keys()
+    #print(vals)
+    keys = []
+    keys.append("669349997011140614")
+    for j in vals:
+      keys.append(j)
+    #username = discord.Guild.get_member(int(keys[0]))
+    for u in keys:
+      username = client.get_user(int(u))
+      username = str(username)
+      username = username[0:len(str(username))-5]
+      if(username == usera):
+        a = keys.index(str(u))
+        b = keys.index(str(author.id))
+        f=open("bank.json",'r+')
+        data = json.load(f)
+        count = 0
+
+        for i in data['bank_details']:
+          if((count)==a):
+            i[str(u)]['wallet']+=int(amta)
+          if((count)==b):
+              i[str(author.id)]['wallet']-=int(amta)
+          count+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o)
+          
+    await message.channel.send("Funds transfered successfully.")
     
 
       

@@ -286,7 +286,7 @@ async def on_message(message):
     count1=0
     for k in data['bank_details']:
       if((count1)==m):
-        if int(k[str(author.id)]['wallet'])<int(amt):
+        if int(k[str(author.id)]['bank'])<int(amt):
           await message.channel.send("You lack the required funds to complete this withdrawl.")
           return
       count1+=1

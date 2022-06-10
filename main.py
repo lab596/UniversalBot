@@ -249,14 +249,29 @@ async def on_message(message):
       vals = i.keys()
     #print(vals)
     keys = []
+    ppl =[]
     keys.append("669349997011140614")
     for j in vals:
       keys.append(j)
     #username = discord.Guild.get_member(int(keys[0]))
+    
+    #checking if author has funds
+    m = keys.index(str(author.id))
+    f=open("bank.json",'r+')
+    data = json.load(f)
+    count1=0
+    for k in data['bank_details']:
+      if((count1)==m):
+        if int(k[str(author.id)]['wallet'])<int(amta):
+          await message.channel.send("You lack the required funds to complete this transfer.")
+          return
+      count1+=1
+      
     for u in keys:
       username = client.get_user(int(u))
       username = str(username)
       username = username[0:len(str(username))-5]
+      ppl.append(username)
       if(username == usera):
         a = keys.index(str(u))
         b = keys.index(str(author.id))
@@ -272,6 +287,19 @@ async def on_message(message):
           count+=1
         with open("bank.json",'w') as o:
           json.dump(data,o)
+
+
+    #checking if user is present
+    found = False
+    for i in ppl:
+      if str(usera) == str(i):
+        found = True
+
+    if found == False:
+      await message.channel.send("Person not in database.")
+      await message.channel.send("Make sure you and the person you are transfering money too have an account.")
+      await message.channel.send("This can be done by typing '$balance'.")
+      return
           
     await message.channel.send("Funds transfered successfully.")
     

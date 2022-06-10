@@ -35,4 +35,9 @@ Coded in *replit.com*
    - Keyword: "$funds!(amount)"
    - Action: *This is an admin action only* - transfers amount provided to the wallet of the author of the command.
 
+* 🎁 Transfer 🎁
+   - Keyword: "(user)$transfer!(amount)"
+   - Action: It transfers money between two accounts
+       - *Admin* - can transfer negative money (taking money out of someones account and adding it to their own)
+
 

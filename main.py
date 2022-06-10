@@ -233,6 +233,75 @@ async def on_message(message):
       
     else:
       await message.channel.send("Sorry, you are not authorized to use this command.")
+  
+  if message.content.startswith("$deposit!"):
+    command = message.content
+    amt = command[9:len(command)]
+    author = message.author
+    users = await get_bank_data()
+    for i in users:
+      vals = i.keys()
+    keys = []
+    keys.append("669349997011140614")
+    for j in vals:
+      keys.append(j)
+    
+    m = keys.index(str(author.id))
+    f=open("bank.json",'r+')
+    data = json.load(f)
+    count1=0
+    for k in data['bank_details']:
+      if((count1)==m):
+        if int(k[str(author.id)]['wallet'])<int(amt):
+          await message.channel.send("You lack the required funds to complete this deposit.")
+          return
+      count1+=1
+    
+    count1=0
+    for k in data['bank_details']:
+      if((count1)==m):
+        k[str(author.id)]['wallet']-=int(amt)
+        k[str(author.id)]['bank']+=int(amt)
+      count1+=1
+    with open("bank.json",'w') as o:
+      json.dump(data,o)
+      
+    await message.channel.send("Deposit successful.")
+  
+  if message.content.startswith("$withdraw!"):
+    command = message.content
+    amt = command[10:len(command)]
+    author = message.author
+    users = await get_bank_data()
+    for i in users:
+      vals = i.keys()
+    keys = []
+    keys.append("669349997011140614")
+    for j in vals:
+      keys.append(j)
+    
+    m = keys.index(str(author.id))
+    f=open("bank.json",'r+')
+    data = json.load(f)
+    count1=0
+    for k in data['bank_details']:
+      if((count1)==m):
+        if int(k[str(author.id)]['wallet'])<int(amt):
+          await message.channel.send("You lack the required funds to complete this withdrawl.")
+          return
+      count1+=1
+    
+    count1=0
+    for k in data['bank_details']:
+      if((count1)==m):
+        k[str(author.id)]['wallet']+=int(amt)
+        k[str(author.id)]['bank']-=int(amt)
+      count1+=1
+    with open("bank.json",'w') as o:
+      json.dump(data,o)
+
+    await message.channel.send("Withdrawl successfull.")
+    
 
   if "$transfer!" in message.content:
     command = message.content

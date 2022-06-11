@@ -236,18 +236,28 @@ while True:
         
       else:
         await message.channel.send("Sorry, you are not authorized to use this command.")
-    
+    #####################################################################################
     if message.content.startswith("$deposit!"):
       command = message.content
       amt = command[9:len(command)]
       author = message.author
+
+
+      
       users = await get_bank_data()
+      vals=[]
       for i in users:
-        vals = i.keys()
+        vals.append(i.keys())
       keys = []
-      keys.append("669349997011140614")
       for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
         keys.append(j)
+
+
       
       m = keys.index(str(author.id))
       f=open("bank.json",'r+')
@@ -270,17 +280,23 @@ while True:
         json.dump(data,o,indent=4)
         
       await message.channel.send("Deposit successful.")
-    
+    ##############################################################################
     if message.content.startswith("$withdraw!"):
       command = message.content
       amt = command[10:len(command)]
       author = message.author
+      
       users = await get_bank_data()
+      vals=[]
       for i in users:
-        vals = i.keys()
+        vals.append(i.keys())
       keys = []
-      keys.append("669349997011140614")
       for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
         keys.append(j)
       
       m = keys.index(str(author.id))
@@ -305,7 +321,7 @@ while True:
   
       await message.channel.send("Withdrawl successfull.")
       
-  
+    #########################################################################################
     if "$transfer!" in message.content:
       command = message.content
       author = message.author
@@ -316,17 +332,24 @@ while True:
       if not(message.author.guild_permissions.administrator) and int(amta) < 0:
         await message.channel.send("You are not authorized to take money.")
         return
+        
       users = await get_bank_data()
+      vals=[]
       for i in users:
-        vals = i.keys()
+        vals.append(i.keys())
       #print(vals)
       keys = []
       ppl =[]
-      keys.append("669349997011140614")
+      
       for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
         keys.append(j)
       #username = discord.Guild.get_member(int(keys[0]))
-      
+      #print(keys)
       #checking if author has funds
       m = keys.index(str(author.id))
       f=open("bank.json",'r+')
@@ -339,11 +362,13 @@ while True:
             return
         count1+=1
       
-
+      #print(keys)
+      #print(usera)
       for u in keys:
         username = client.get_user(int(u))
         username = str(username)
         username = username[0:len(str(username))-5]
+        #print(username)
         ppl.append(username)
         if(username == usera):
           a = keys.index(str(u))
@@ -351,7 +376,10 @@ while True:
           f=open("bank.json",'r+')
           data = json.load(f)
           count = 0
+          #print(b)
+          #print(a)
           for i in data['bank_details']:
+            #print(i)
             if((count)==a):
               i[str(u)]['wallet']+=int(amta)
             if((count)==b):

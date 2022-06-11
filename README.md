@@ -40,4 +40,10 @@ Coded in *replit.com*
    - Action: It transfers money between two accounts
        - *Admin* - can transfer negative money (taking money out of someones account and adding it to their own)
 
-
+* 🏦 Deposit 🏦
+   - Keyword: "$deposit!(amount)"
+   - Action: Moves money from ones wallet to their bank
+ 
+ * 💵 Withdraw 💵
+   - Keyword: "$withdraw!(amount)"
+   - Action: Moves money from bank to wallet in orfer to allow for purchases 

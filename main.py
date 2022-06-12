@@ -424,6 +424,7 @@ while True:
       #print(min)
       with open("bank.json","r") as f:
           users = json.load(f)['bank_details']
+      #print(users)
         
       vals=[]
       for i in users:
@@ -513,5 +514,3 @@ while True:
 
       
     
-    
-  

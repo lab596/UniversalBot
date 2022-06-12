@@ -402,6 +402,46 @@ while True:
         return
             
       await message.channel.send("Funds transfered successfully.")
+
+
+  #========================================
+  from datetime import datetime
+
+  now = datetime.now()
+
+  current_time = now.strftime("%H:%M")
+  print("Current Time is :", current_time)
+  time = current_time.split(":")
+  min = time[1]
+  print(min)
+
+  with open("bank.json","r") as f:
+      users = json.load(f)['bank_details']
+  vals=[]
+  for i in users:
+    vals.append(i.keys())
+  #print(vals)
+  keys = []
+  ppl =[]
+      
+  for j in vals:
+    j = str(j)
+    j1 = j.split("'")
+    j = j1[1]
+    j2 = j.split("'")
+    j=j2[0]
+    keys.append(j)
+  
+  
+  if(min == "00"):   
+    f=open("bank.json",'r+')
+    data = json.load(f)
+    count =0
+    for i in data['bank_details']:
+      a = i[str(keys[count])]['bank']
+      i[str(keys[count])]['bank'] = a * 1.05
+      count+=1
+  #=======================================================    
       
   
         
@@ -443,10 +483,12 @@ while True:
     with open("bank.json","r") as f:
       users = json.load(f)['bank_details']
     return users
-  
+
   
   
   client.run(os.getenv('TOKEN'))
+
+    
   
   #{"bank_details": [
     

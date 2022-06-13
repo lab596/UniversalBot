@@ -7,7 +7,8 @@ from random import randint
 import urllib.parse, urllib.request, re
 import json
 from datetime import datetime
-import threading
+#import threading
+from threading import Timer
 
 
 
@@ -414,48 +415,50 @@ while True:
 
 
   def intrest():
-    while(True):
-      now = datetime.now()
+    #print("Function called.")
+    now = datetime.now()
     
-      current_time = now.strftime("%H:%M")
-      #print("Current Time is :", current_time)
-      time = current_time.split(":")
-      min = time[1]
-      #print(min)
-      with open("bank.json","r") as f:
-          users = json.load(f)['bank_details']
-      #print(users)
+    current_time = now.strftime("%H:%M")
+    #print("Current Time is :", current_time)
+    time = current_time.split(":")
+    min = time[1]
+    #print(min)
+    with open("bank.json","r") as f:
+        users = json.load(f)['bank_details']
+    #print(users)
         
-      vals=[]
-      for i in users:
-        vals.append(i.keys())
-      #print(vals)
-      keys = []
-      ppl =[]
+    vals=[]
+    for i in users:
+      vals.append(i.keys())
+    #print(vals)
+    keys = []
+    ppl =[]
           
-      for j in vals:
-        j = str(j)
-        j1 = j.split("'")
-        j = j1[1]
-        j2 = j.split("'")
-        j=j2[0]
-        keys.append(j)
+    for j in vals:
+      j = str(j)
+      j1 = j.split("'")
+      j = j1[1]
+      j2 = j.split("'")
+      j=j2[0]
+      keys.append(j)
     
-      count = 0
-      if(min == "00"):
-        #print("Passes if statement.")
-        f=open("bank.json",'r+')
-        data = json.load(f)
-        for i in data['bank_details']:
-          a = i[str(keys[count])]['bank']
-          i[str(keys[count])]['bank'] = int(a) * 1.02
-          count+=1
+    count = 0
+    if(min == "00"):
+      #print("Passes if statement.")
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      for i in data['bank_details']:
+        a = i[str(keys[count])]['bank']
+        i[str(keys[count])]['bank'] = int(a) * 1.01
+        count+=1
           
-        with open("bank.json",'w') as o:
-          json.dump(data,o,indent=4)
-    
-  t1 = threading.Thread(target = intrest)
-  t1.start()
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+    Timer(60,intrest).start()
+
+  intrest()
+  #t1 = threading.Thread(target = intrest)
+  #t1.start()
 
 
   
@@ -514,3 +517,5 @@ while True:
 
       
     
+    
+  

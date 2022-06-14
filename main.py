@@ -32,10 +32,34 @@ async def on_ready():
   print("We have logged in as {0.user}".format(client))
   print("Hello Sir, I am ready")
 
+
+@client.event
+async def on_guild_join(guild):
+  f=open("bank.json",'r+')
+  data = json.load(f)
+  
+  guild_db = data.get(str(guild.id))
+  if not guild_db:  # If the guild hasn't been visited yet
+      data[str(guild.id)] = [ ]
+        # Do your stuff to create a new economic system
+  else:
+        # In case the guild already exists in the database
+        # Do stuff here
+    print("ok")
+  
+  with open("bank.json",'w') as o:
+    json.dump(data,o,indent=4)
+
 keep_alive()
 while True:
+  
+
+  
   @client.event
   async def on_message(message):
+
+    current_guild = str(message.guild.id)
+    #print(current_guild)
   
   
     #if message.author.id == 758509998459977768:
@@ -46,7 +70,7 @@ while True:
       #print("I have spoken.")
       return
   
-    if message.content.startswith("\hello") and not(message.author.id == 758509998459977768):
+    if message.content.startswith("\hello"):
       value = randint(0,6)
       
       if value == 0:
@@ -171,8 +195,8 @@ while True:
   
     if message.content.startswith("$balance"):
       author = message.author
-      await open_account(author)
-      users = await get_bank_data()
+      await open_account(author,current_guild)
+      users = await get_bank_data(current_guild)
       for i in users:
         vals = i.keys()
         for x in vals:
@@ -203,7 +227,7 @@ while True:
         data = json.load(f)
         #print(data)
         #print(data['bank_details'])
-        for i in data['bank_details']:
+        for i in data[current_guild]: ###
           #print(i)
           #print(i[str(author.id)])
           #print(i[str(author.id)]['wallet'])
@@ -247,7 +271,7 @@ while True:
 
 
       
-      users = await get_bank_data()
+      users = await get_bank_data(current_guild)
       vals=[]
       for i in users:
         vals.append(i.keys())
@@ -266,7 +290,7 @@ while True:
       f=open("bank.json",'r+')
       data = json.load(f)
       count1=0
-      for k in data['bank_details']:
+      for k in data[current_guild]: ###
         if((count1)==m):
           if int(k[str(author.id)]['wallet'])<int(amt):
             await message.channel.send("You lack the required funds to complete this deposit.")
@@ -274,7 +298,7 @@ while True:
         count1+=1
       
       count1=0
-      for k in data['bank_details']:
+      for k in data[current_guild]: ###
         if((count1)==m):
           k[str(author.id)]['wallet']-=int(amt)
           k[str(author.id)]['bank']+=int(amt)
@@ -289,7 +313,7 @@ while True:
       amt = command[10:len(command)]
       author = message.author
       
-      users = await get_bank_data()
+      users = await get_bank_data(current_guild)
       vals=[]
       for i in users:
         vals.append(i.keys())
@@ -306,7 +330,7 @@ while True:
       f=open("bank.json",'r+')
       data = json.load(f)
       count1=0
-      for k in data['bank_details']:
+      for k in data[current_guild]: ###
         if((count1)==m):
           if int(k[str(author.id)]['bank'])<int(amt):
             await message.channel.send("You lack the required funds to complete this withdrawl.")
@@ -314,7 +338,7 @@ while True:
         count1+=1
       
       count1=0
-      for k in data['bank_details']:
+      for k in data[current_guild]: ###
         if((count1)==m):
           k[str(author.id)]['wallet']+=int(amt)
           k[str(author.id)]['bank']-=int(amt)
@@ -336,7 +360,7 @@ while True:
         await message.channel.send("You are not authorized to take money.")
         return
         
-      users = await get_bank_data()
+      users = await get_bank_data(current_guild)
       vals=[]
       for i in users:
         vals.append(i.keys())
@@ -358,7 +382,7 @@ while True:
       f=open("bank.json",'r+')
       data = json.load(f)
       count1=0
-      for k in data['bank_details']:
+      for k in data[current_guild]:
         if((count1)==m):
           if int(k[str(author.id)]['wallet'])<int(amta):
             await message.channel.send("You lack the required funds to complete this transfer.")
@@ -381,7 +405,7 @@ while True:
           count = 0
           #print(b)
           #print(a)
-          for i in data['bank_details']:
+          for i in data[current_guild]:
             #print(i)
             if((count)==a):
               i[str(u)]['wallet']+=int(amta)
@@ -414,49 +438,49 @@ while True:
   
 
 
-  def intrest():
+  #def intrest():
     #print("Function called.")
-    now = datetime.now()
+    #now = datetime.now()
     
-    current_time = now.strftime("%H:%M")
+    #current_time = now.strftime("%H:%M")
     #print("Current Time is :", current_time)
-    time = current_time.split(":")
-    min = time[1]
+    #time = current_time.split(":")
+    #min = time[1]
     #print(min)
-    with open("bank.json","r") as f:
-        users = json.load(f)['bank_details']
+    #with open("bank.json","r") as f:
+        #users = json.load(f)['bank_details']
     #print(users)
         
-    vals=[]
-    for i in users:
-      vals.append(i.keys())
+    #vals=[]
+    #for i in users:
+      #vals.append(i.keys())
     #print(vals)
-    keys = []
-    ppl =[]
+    #keys = []
+    #ppl =[]
           
-    for j in vals:
-      j = str(j)
-      j1 = j.split("'")
-      j = j1[1]
-      j2 = j.split("'")
-      j=j2[0]
-      keys.append(j)
+    #for j in vals:
+      #j = str(j)
+      #j1 = j.split("'")
+      #j = j1[1]
+      #j2 = j.split("'")
+      #j=j2[0]
+      #keys.append(j)
     
-    count = 0
-    if(min == "00"):
+    #count = 0
+    #if(min == "00"):
       #print("Passes if statement.")
-      f=open("bank.json",'r+')
-      data = json.load(f)
-      for i in data['bank_details']:
-        a = i[str(keys[count])]['bank']
-        i[str(keys[count])]['bank'] = int(a) * 1.01
-        count+=1
+      #f=open("bank.json",'r+')
+      #data = json.load(f)
+      #for i in data['bank_details']:
+        #a = i[str(keys[count])]['bank']
+        #i[str(keys[count])]['bank'] = int(a) * 1.01
+        #count+=1
           
-      with open("bank.json",'w') as o:
-        json.dump(data,o,indent=4)
-    Timer(60,intrest).start()
+      #with open("bank.json",'w') as o:
+        #json.dump(data,o,indent=4)
+    #Timer(60,intrest).start()
 
-  intrest()
+  #intrest()
   #t1 = threading.Thread(target = intrest)
   #t1.start()
 
@@ -468,12 +492,12 @@ while True:
         
   
   
-  def write_json(new_data, filename='bank.json'):
+  def write_json(new_data,id, filename='bank.json'):
       with open(filename,'r+') as file:
           # First we load existing data into a dict.
           file_data = json.load(file)
           # Join new_data with file_data inside emp_details
-          file_data["bank_details"].append(new_data)
+          file_data[id].append(new_data)
           # Sets file's current position at offset.
           file.seek(0)
           # convert back to json.
@@ -482,9 +506,9 @@ while True:
   
   
       
-  async def open_account(user):
+  async def open_account(user,id):
     with open("bank.json","r") as f:
-      users = json.load(f)['bank_details']
+      users = json.load(f)[id]
     for i in users:
       vals = i.keys()
       for x in vals:
@@ -496,13 +520,13 @@ while True:
       users[str(user.id)]["wallet"]= 5
       users[str(user.id)]["bank"]= 10
      
-      write_json(users)
+      write_json(users,id)
     
     return True
   
-  async def get_bank_data():
+  async def get_bank_data(id):
     with open("bank.json","r") as f:
-      users = json.load(f)['bank_details']
+      users = json.load(f)[id]
     return users
 
   

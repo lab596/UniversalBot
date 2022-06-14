@@ -180,10 +180,20 @@ while True:
       search_content=htm_content.read().decode()
       search_results = re.findall(r'\/watch\?v=\w+',search_content)
       top_res = []
+      a=0;
       for i in search_results:
-        top_res.append(i)
+        if(a>0):
+          #print(i)
+          #print(search_results[a])
+          if(i != search_results[a-1]):            
+            top_res.append(i)
+        else:
+          top_res.append(i)
+        a+=1
+      print(top_res)  
       c = 1
       j=5
+      #print(top_res)
       await message.channel.send("Top 5 results:")
       while j > 0:
         if c == 1: 

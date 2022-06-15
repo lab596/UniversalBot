@@ -69,6 +69,66 @@ while True:
     if message.author == client.user:
       #print("I have spoken.")
       return
+
+    if message.content.startswith("\help"):
+      em = discord.Embed(title = "Universal Bot Actions", color = discord.Color.red())
+      em.add_field(name = "Basic Commands", value = """ Hello Command 👋
+Keyword: "\hello"
+Action: Will respond with a variety of seven unique responses - one is randomly selected.
+
+👨 Dad Jokes 👨
+Keyword: "\dadjoke"
+Action: Uses reddit api and refrences dadjokes (r/dadjokes) subreddit to randomly pull one of the fifty popular posts.
+
+🤣 Memes 🤣
+Keyword: "\meme"
+Action: Uses reddit api and refrences dankmemes (r/dankmemes) or meme (r/meme) (randomly chooses one each time) subreddit to randomly pull one of the fifty popular posts.
+""",inline=False)
+
+
+      em.add_field(name = "Queries", value = """ 🎞 Youtube Search 🎞
+Keyword: "*yquery!(search)"
+Action: Refrences youtube.com and searches what is inputed. Outputs top five videos that show up as a result of that search.
+
+👹 Reddit Search 👹
+Keyword: "*rquery!(search)"
+Action: Refrences reddit.com and searches what is inputed. Outputs top three of the top posts that show up as a result of that search. Additionally it provides a link to that subreddit.
+""",inline=False)
+
+
+      em.add_field(name = "Economy System", value = """ ⚖️ Balance ⚖️
+Keyword: "$balance"
+Action: First, it checks if the user typing the command has a balance at all, if not it creates an account for them and provides starting money. It then prints their money in an embed that displays money in the wallent and in the bank.
+
+💸 Funds 💸
+Keyword: "$funds!(amount)"
+Action: This is an admin action only - transfers amount provided to the wallet of the author of the command.
+
+🎁 Transfer 🎁
+Keyword: "(user)$transfer!(amount)"
+Action: It transfers money between two accounts
+Admin - can transfer negative money (taking money out of someones account and adding it to their own)
+
+🏦 Deposit 🏦
+Keyword: "$deposit!(amount)"
+Action: Moves money from ones wallet to their bank
+
+💵 Withdraw 💵
+Keyword: "$withdraw!(amount)"
+Action: Moves money from bank to wallet in orfer to allow for purchases
+""",inline=False)
+
+      
+
+
+
+      await message.channel.send(embed=em)
+
+
+
+
+
+      
   
     if message.content.startswith("\hello"):
       value = randint(0,6)

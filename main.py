@@ -190,7 +190,7 @@ while True:
         else:
           top_res.append(i)
         a+=1
-      print(top_res)  
+      #print(top_res)  
       c = 1
       j=5
       #print(top_res)

@@ -6,7 +6,11 @@ Coded in *replit.com*
 Bot invite code: https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292057839680&scope=bot
 
 # 📨 Commands 📨
-* Hello Command 👋
+* ❓ Help ❓
+   - Keyword: "\help"
+   - Action: Will provide a list of all supported commands and their purpose - similiar to this page that outlines commands.
+ 
+* 👋 Hello 👋
    - Keyword: "\hello"
    - Action: Will respond with a variety of seven unique responses - one is randomly selected.
 

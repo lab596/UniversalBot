@@ -6,9 +6,9 @@ import random
 from random import randint
 import urllib.parse, urllib.request, re
 import json
-from datetime import datetime
+#from datetime import datetime
 #import threading
-from threading import Timer
+#from threading import Timer
 
 
 
@@ -70,8 +70,8 @@ while True:
       #print("I have spoken.")
       return
 
-    if message.content.startswith("\help"):
-      em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `\` before each command.", color = discord.Color.red())
+    if message.content.startswith("+help"):
+      em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `+` before each command.", color = discord.Color.red())
       em.add_field(name = "👋 Greeting", value= "`hello`")
       em.add_field(name = "🤣 Jokes", value= "`meme`  ``\ndadjoke``")
       em.add_field(name = "❓ Query", value= "`yquery!(search)`  ``\nrquery!(search)``")
@@ -91,7 +91,7 @@ while True:
 
       
   
-    if message.content.startswith("\hello"):
+    if message.content.startswith("+hello"):
       value = randint(0,6)
       
       if value == 0:
@@ -115,7 +115,7 @@ while True:
       if value == 6:
         await message.channel.send("Yo.")
   
-    if message.content.startswith('\rquery!'):
+    if message.content.startswith('+rquery!'):
         command = message.content
         search = command[8:len(command)]
      
@@ -141,7 +141,7 @@ while True:
           i+=1
         await message.channel.send("https://www.reddit.com/r/"+search+"/")
   
-    if message.content.startswith("\dadjoke"):
+    if message.content.startswith("+dadjoke"):
       subredditd = reddit.subreddit("dadjokes")
       all_subs= []
       top = subredditd.hot(limit = 50)
@@ -162,7 +162,7 @@ while True:
       await message.channel.send(body)
       
   
-    if message.content.startswith("\meme"):
+    if message.content.startswith("+meme"):
       all_subred = []
       subreddit1 = reddit.subreddit("dankmemes")
       subreddit2 = reddit.subreddit("meme")
@@ -186,7 +186,7 @@ while True:
       await message.channel.send(embed = em)
   
   
-    if message.content.startswith("\yquery!"):
+    if message.content.startswith("+yquery!"):
       command = message.content
       search = command[8:len(command)]
       #print(search)
@@ -224,7 +224,7 @@ while True:
         j-=1
         c+=1
   
-    if message.content.startswith("\balance"):
+    if message.content.startswith("+balance"):
       author = message.author
       await open_account(author,current_guild)
       users = await get_bank_data(current_guild)
@@ -245,7 +245,7 @@ while True:
   
   
       
-    if message.content.startswith("\funds!"):
+    if message.content.startswith("+funds!"):
       if message.author.guild_permissions.administrator:
         command = message.content
         amt = command[7:len(command)]
@@ -295,7 +295,7 @@ while True:
       else:
         await message.channel.send("Sorry, you are not authorized to use this command.")
     #####################################################################################
-    if message.content.startswith("\deposit!"):
+    if message.content.startswith("+deposit!"):
       command = message.content
       amt = command[9:len(command)]
       author = message.author
@@ -339,7 +339,7 @@ while True:
         
       await message.channel.send("Deposit successful.")
     ##############################################################################
-    if message.content.startswith("\withdraw!"):
+    if message.content.startswith("+withdraw!"):
       command = message.content
       amt = command[10:len(command)]
       author = message.author
@@ -380,10 +380,10 @@ while True:
       await message.channel.send("Withdrawl successfull.")
       
     #########################################################################################
-    if "$transfer!" in message.content:
+    if "+transfer!" in message.content:
       command = message.content
       author = message.author
-      user = command.split("$")
+      user = command.split("+")
       usera = user[0]
       amt = command.split("!")
       amta = amt[1]
@@ -456,7 +456,7 @@ while True:
       if found == False:
         await message.channel.send("Person not in database.")
         await message.channel.send("Make sure you and the person you are transfering money too have an account.")
-        await message.channel.send("This can be done by typing '$balance'.")
+        await message.channel.send("This can be done by typing '+balance'.")
         return
             
       await message.channel.send("Funds transfered successfully.")

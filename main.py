@@ -8,7 +8,7 @@ import urllib.parse, urllib.request, re
 import json
 #from datetime import datetime
 #import threading
-#from threading import Timer
+from threading import Timer
 
 
 
@@ -75,19 +75,29 @@ while True:
       em.add_field(name = "👋 Greeting", value= "`hello`")
       em.add_field(name = "🤣 Jokes", value= "`meme`  ``\ndadjoke``")
       em.add_field(name = "❓ Query", value= "`yquery!(search)`  ``\nrquery!(search)``")
-      em.add_field(name = "💵 Economy", value= "``balance``  ``\nfunds!(amount)`` ``\ndeposit!(amount)`` ``\nwithdraw!(amount)`` ``\n(user)transfer!(amount)``",inline=False)
+      em.add_field(name = "💵 Economy (for Ranks)", value= "``balance``  ``\nfunds!(amount)`` ``\ndeposit!(amount)`` ``\nwithdraw!(amount)`` ``\n(user)transfer!(amount)``",inline=False)
       
 
       
       em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292057839680&scope=bot) • [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
 
-      em.set_footer(text="For detailed info about each command please visit the 'Commands' link above.")
+      em.set_footer(text="For detailed info about each command please visit the 'Commands' link above. Use `rhelp` to have the ranks explained.")
 
       await message.channel.send(embed=em)
 
 
-
-
+    if message.content.startswith("+rhelp"):
+      emb = discord.Embed(title = "Ranks", description="These are the prestige ranks within the economy system. These ranks can be purchased with economy money.", color = discord.Color.blue())
+      emb.add_field(name = "Bronze ~ Cost: 1500", value= "`bbronze`",inline = True)
+      emb.add_field(name = "Silver ~ Cost: 3000", value= "`bsilver`",inline = True)
+      emb.add_field(name = "Gold ~ Cost: 6000", value= "`bgold`",inline = True)
+      emb.add_field(name = "Platinum ~ Cost: 12000", value= "`bplat`",inline = True)
+      emb.add_field(name = "Diamond ~ Cost: 12000", value= "`bdia`",inline = True)
+      emb.add_field(name = "Master ~ Cost: 24000", value= "`bmas`",inline = True)
+      emb.add_field(name = "Grand Master ~ Cost: 50000", value= "`bgmas`",inline = True)
+      emb.set_image(url="https://www.simpleimageresizer.com/_uploads/photos/539dd618/image_1_20.png")
+      
+      await message.channel.send(embed=emb)
 
       
   
@@ -466,9 +476,8 @@ while True:
       
   #========================================
   
+
   
-
-
   #def intrest():
     #print("Function called.")
     #now = datetime.now()
@@ -549,7 +558,7 @@ while True:
       users = {}
       users[str(user.id)] = {}
       users[str(user.id)]["wallet"]= 5
-      users[str(user.id)]["bank"]= 10
+      users[str(user.id)]["bank"]= 0
      
       write_json(users,id)
     
@@ -560,7 +569,48 @@ while True:
       users = json.load(f)[id]
     return users
 
+  def interest():
+    #print("Bank updated.")
+      
+    Timer(60,interest).start()
+    with open("bank.json","r+") as f:
+      guilds = json.load(f)
+      #print("I am here")
+      guild = []
+      for i in guilds.keys():
+        guild.append(i)
   
+      for j in guild:
+        pkeys = []
+        with open("bank.json","r+") as f:
+          users = json.load(f)[str(j)]
+        for l in users:
+          pkeys.append(l.keys())
+          #print(j)
+          keys = []
+          for k in pkeys:
+            k = str(k)
+            k1 = k.split("'")
+            k = k1[1]
+            k2 = k.split("'")
+            k=k2[0]
+            keys.append(k)
+          #print(keys)
+  
+        count = 0
+        f=open("bank.json",'r+')
+        data = json.load(f)
+        #print(j)
+        for i in data[str(j)]:
+          a = 0.0 + i[str(keys[count])]['bank']
+          #print(a)
+          i[str(keys[count])]['bank'] = a + 0.25
+          count+=1
+  
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+  
+  interest()
   
   client.run(os.getenv('TOKEN'))
 

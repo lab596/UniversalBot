@@ -71,56 +71,17 @@ while True:
       return
 
     if message.content.startswith("\help"):
-      em = discord.Embed(title = "Universal Bot Actions", color = discord.Color.red())
-      em.add_field(name = "Basic Commands", value = """ Hello Command 👋
-Keyword: "\hello"
-Action: Will respond with a variety of seven unique responses - one is randomly selected.
-
-👨 Dad Jokes 👨
-Keyword: "\dadjoke"
-Action: Uses reddit api and refrences dadjokes (r/dadjokes) subreddit to randomly pull one of the fifty popular posts.
-
-🤣 Memes 🤣
-Keyword: "\meme"
-Action: Uses reddit api and refrences dankmemes (r/dankmemes) or meme (r/meme) (randomly chooses one each time) subreddit to randomly pull one of the fifty popular posts.
-""",inline=False)
-
-
-      em.add_field(name = "Queries", value = """ 🎞 Youtube Search 🎞
-Keyword: "*yquery!(search)"
-Action: Refrences youtube.com and searches what is inputed. Outputs top five videos that show up as a result of that search.
-
-👹 Reddit Search 👹
-Keyword: "*rquery!(search)"
-Action: Refrences reddit.com and searches what is inputed. Outputs top three of the top posts that show up as a result of that search. Additionally it provides a link to that subreddit.
-""",inline=False)
-
-
-      em.add_field(name = "Economy System", value = """ ⚖️ Balance ⚖️
-Keyword: "$balance"
-Action: First, it checks if the user typing the command has a balance at all, if not it creates an account for them and provides starting money. It then prints their money in an embed that displays money in the wallent and in the bank.
-
-💸 Funds 💸
-Keyword: "$funds!(amount)"
-Action: This is an admin action only - transfers amount provided to the wallet of the author of the command.
-
-🎁 Transfer 🎁
-Keyword: "(user)$transfer!(amount)"
-Action: It transfers money between two accounts
-Admin - can transfer negative money (taking money out of someones account and adding it to their own)
-
-🏦 Deposit 🏦
-Keyword: "$deposit!(amount)"
-Action: Moves money from ones wallet to their bank
-
-💵 Withdraw 💵
-Keyword: "$withdraw!(amount)"
-Action: Moves money from bank to wallet in orfer to allow for purchases
-""",inline=False)
-
+      em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `\` before each command.", color = discord.Color.red())
+      em.add_field(name = "👋 Greeting", value= "`hello`")
+      em.add_field(name = "🤣 Jokes", value= "`meme`  ``\ndadjoke``")
+      em.add_field(name = "❓ Query", value= "`yquery!(search)`  ``\nrquery!(search)``")
+      em.add_field(name = "💵 Economy", value= "``balance``  ``\nfunds!(amount)`` ``\ndeposit!(amount)`` ``\nwithdraw!(amount)`` ``\n(user)transfer!(amount)``",inline=False)
       
 
+      
+      em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292057839680&scope=bot) • [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
 
+      em.set_footer(text="For detailed info about each command please visit the 'Commands' link above.")
 
       await message.channel.send(embed=em)
 
@@ -154,7 +115,7 @@ Action: Moves money from bank to wallet in orfer to allow for purchases
       if value == 6:
         await message.channel.send("Yo.")
   
-    if message.content.startswith('*rquery!'):
+    if message.content.startswith('\rquery!'):
         command = message.content
         search = command[8:len(command)]
      
@@ -225,7 +186,7 @@ Action: Moves money from bank to wallet in orfer to allow for purchases
       await message.channel.send(embed = em)
   
   
-    if message.content.startswith("*yquery!"):
+    if message.content.startswith("\yquery!"):
       command = message.content
       search = command[8:len(command)]
       #print(search)
@@ -263,7 +224,7 @@ Action: Moves money from bank to wallet in orfer to allow for purchases
         j-=1
         c+=1
   
-    if message.content.startswith("$balance"):
+    if message.content.startswith("\balance"):
       author = message.author
       await open_account(author,current_guild)
       users = await get_bank_data(current_guild)
@@ -284,7 +245,7 @@ Action: Moves money from bank to wallet in orfer to allow for purchases
   
   
       
-    if message.content.startswith("$funds!"):
+    if message.content.startswith("\funds!"):
       if message.author.guild_permissions.administrator:
         command = message.content
         amt = command[7:len(command)]
@@ -334,7 +295,7 @@ Action: Moves money from bank to wallet in orfer to allow for purchases
       else:
         await message.channel.send("Sorry, you are not authorized to use this command.")
     #####################################################################################
-    if message.content.startswith("$deposit!"):
+    if message.content.startswith("\deposit!"):
       command = message.content
       amt = command[9:len(command)]
       author = message.author
@@ -378,7 +339,7 @@ Action: Moves money from bank to wallet in orfer to allow for purchases
         
       await message.channel.send("Deposit successful.")
     ##############################################################################
-    if message.content.startswith("$withdraw!"):
+    if message.content.startswith("\withdraw!"):
       command = message.content
       amt = command[10:len(command)]
       author = message.author

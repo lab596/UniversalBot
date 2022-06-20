@@ -882,6 +882,7 @@ while True:
   
       
   async def open_account(user,id):
+    #print(id)
     with open("bank.json","r") as f:
       users = json.load(f)[id]
     for i in users:

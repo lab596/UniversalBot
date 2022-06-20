@@ -77,7 +77,8 @@ while True:
     #General Help
     #=========================================
     if message.content.startswith("+help"):
-      em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `+` before each command.", color = discord.Color.red())
+      em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `+` before each command.", 
+                         color = discord.Color.red())
       em.add_field(name = "👋 Greeting", value= "`hello`")
       em.add_field(name = "🤣 Jokes", value= "`meme`  ``\ndadjoke``")
       em.add_field(name = "❓ Query", value= "`yquery!(search)`  ``\nrquery!(search)``")
@@ -96,7 +97,8 @@ while True:
     #Rank Help
     #=========================================
     if message.content.startswith("+rhelp"):
-      emb = discord.Embed(title = "Ranks", description="These are the prestige ranks within the economy system. These ranks can be purchased with economy money.", color = discord.Color.blue())
+      emb = discord.Embed(title = "Ranks", description="These are the prestige ranks within the economy system. These ranks can be purchased with economy money.", 
+                          color = discord.Color.blue())
       emb.add_field(name = "Bronze ~ Cost: 1500", value= "`bbronze`",inline = True)
       emb.add_field(name = "Silver ~ Cost: 3000", value= "`bsilver`",inline = True)
       emb.add_field(name = "Gold ~ Cost: 6000", value= "`bgold`",inline = True)

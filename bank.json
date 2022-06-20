@@ -3,14 +3,14 @@
         {
             "758509998459977768": {
                 "wallet": 509,
-                "bank": 60.75
+                "bank": 60.75,
                 "prestige": "unranked"
             }
         },
         {
             "529460679950991360": {
                 "wallet": 15,
-                "bank": 75.75
+                "bank": 75.75,
                 "prestige": "unranked"
             }
         },
@@ -26,7 +26,7 @@
         {
             "669349997011140614": {
                 "wallet": 30,
-                "bank": 80.75
+                "bank": 80.75,
                 "prestige": "unranked"
             }
         }
@@ -35,7 +35,7 @@
         {
             "669349997011140614": {
                 "wallet": 5,
-                "bank": 75.75
+                "bank": 75.75,
                 "prestige": "unranked"
             }
         }
@@ -46,14 +46,14 @@
         {
             "433040068958093312": {
                 "wallet": 5,
-                "bank": 75.75
+                "bank": 75.75,
                 "prestige": "unranked"
             }
         },
         {
             "669349997011140614": {
                 "wallet": 5,
-                "bank": 75.75
+                "bank": 75.75,
                 "prestige": "unranked"
             }
         }
@@ -63,7 +63,7 @@
         {
             "491002268401926145": {
                 "wallet": 5,
-                "bank": 75.75
+                "bank": 75.75,
                 "prestige": "unranked"
             }
         }

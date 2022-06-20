@@ -77,18 +77,15 @@ while True:
     #General Help
     #=========================================
     if message.content.startswith("+help"):
-      em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `+` before each command.", 
-                         color = discord.Color.red())
+      em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `+` before each command.", color = discord.Color.red())
       em.add_field(name = "👋 Greeting", value= "`hello`")
       em.add_field(name = "🤣 Jokes", value= "`meme`  ``\ndadjoke``")
       em.add_field(name = "❓ Query", value= "`yquery!(search)`  ``\nrquery!(search)``")
-      em.add_field(name = "💵 Economy (for Ranks)", value= "``balance``  ``\nfunds!(amount)`` ``\ndeposit!(amount)`` ``\nwithdraw!(amount)`` ``\n(user)transfer!
-                   (amount)``",inline=False)
+      em.add_field(name = "💵 Economy (for Ranks)", value= "``balance``  ``\nfunds!(amount)`` ``\ndeposit!(amount)`` ``\nwithdraw!(amount)`` ``\n(user)transfer!(amount)``",inline=False)
       
 
       
-      em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292057839680&scope=bot) • 
-                   [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
+      em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=17381259328&scope=bot) • [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
 
       em.set_footer(text="For detailed info about each command please visit the 'Commands' link above. Use `rhelp` to have the ranks explained.")
 
@@ -97,8 +94,7 @@ while True:
     #Rank Help
     #=========================================
     if message.content.startswith("+rhelp"):
-      emb = discord.Embed(title = "Ranks", description="These are the prestige ranks within the economy system. These ranks can be purchased with economy money.", 
-                          color = discord.Color.blue())
+      emb = discord.Embed(title = "Ranks", description="These are the prestige ranks within the economy system. These ranks can be purchased with economy money.", color = discord.Color.blue())
       emb.add_field(name = "Bronze ~ Cost: 1500", value= "`bbronze`",inline = True)
       emb.add_field(name = "Silver ~ Cost: 3000", value= "`bsilver`",inline = True)
       emb.add_field(name = "Gold ~ Cost: 6000", value= "`bgold`",inline = True)
@@ -562,6 +558,10 @@ while True:
           if k[str(author.id)]['prestige']== 'unranked':
             k[str(author.id)]['prestige']= 'BRONZE'
             k[str(author.id)]['wallet']-= 1500
+            author1 = str(author)
+            authorn1 = author1.split("#")
+            authorn = authorn1[0]
+            await author.edit(nick=str(authorn)+"🟫")
           else:
              await message.channel.send("Must be unranked to purchase this rank.")
              return
@@ -570,7 +570,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to bronze!")
-    
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🟫")
     #Silver Purchase
     #=========================================
     if message.content.startswith("+bsilver"):
@@ -606,16 +606,264 @@ while True:
           if k[str(author.id)]['prestige']== 'BRONZE':
             k[str(author.id)]['prestige']= 'SILVER'
             k[str(author.id)]['wallet']-= 3000
+            author1 = str(author)
+            authorn1 = author1.split("#")
+            authorn = authorn1[0]
+            await author.edit(nick=str(authorn)+"⬜")
           else:
-             await message.channel.send("Must be BRONZE to purchase this rank.")
+             await message.channel.send("Must be bronze to purchase this rank.")
              return
         count1+=1
       with open("bank.json",'w') as o:
         json.dump(data,o,indent=4)
 
-      await message.channel.send(str(author) + " has been promoted to SILVER!")
+      await message.channel.send(str(author) + " has been promoted to silver!")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"⬜")
+
+    #Gold Purchase
+    #=========================================
+    if message.content.startswith("+bgold"):
+      author = message.author
+
+      users = await get_bank_data(current_guild)
+      vals=[]
+      for i in users:
+        vals.append(i.keys())
+      keys = []
+      for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
+        keys.append(j)
       
-         
+      m = keys.index(str(author.id))
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if int(k[str(author.id)]['wallet'])<6000:
+            await message.channel.send("You lack the required funds to complete this purchase.")
+            return
+        count1+=1
+      
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if k[str(author.id)]['prestige']== 'SILVER':
+            k[str(author.id)]['prestige']= 'GOLD'
+            k[str(author.id)]['wallet']-= 6000
+            author1 = str(author)
+            authorn1 = author1.split("#")
+            authorn = authorn1[0]
+            await author.edit(nick=str(authorn)+"🟨")
+          else:
+             await message.channel.send("Must be silver to purchase this rank.")
+             return
+        count1+=1
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+
+      await message.channel.send(str(author) + " has been promoted to gold!")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🟨")
+    
+    #Plat Purchase
+    #=========================================
+    if message.content.startswith("+bplat"):
+      author = message.author
+
+      users = await get_bank_data(current_guild)
+      vals=[]
+      for i in users:
+        vals.append(i.keys())
+      keys = []
+      for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
+        keys.append(j)
+      
+      m = keys.index(str(author.id))
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if int(k[str(author.id)]['wallet'])<12000:
+            await message.channel.send("You lack the required funds to complete this purchase.")
+            return
+        count1+=1
+      
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if k[str(author.id)]['prestige']== 'GOLD':
+            k[str(author.id)]['prestige']= 'PLAT'
+            k[str(author.id)]['wallet']-= 12000
+            author1 = str(author)
+            authorn1 = author1.split("#")
+            authorn = authorn1[0]
+            await author.edit(nick=str(authorn)+"⬛")
+          else:
+             await message.channel.send("Must be gold to purchase this rank.")
+             return
+        count1+=1
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+
+      await message.channel.send(str(author) + " has been promoted to platinum!")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"⬛")
+    
+    #Dia Purchase
+    #=========================================
+    if message.content.startswith("+bdia"):
+      author = message.author
+
+      users = await get_bank_data(current_guild)
+      vals=[]
+      for i in users:
+        vals.append(i.keys())
+      keys = []
+      for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
+        keys.append(j)
+      
+      m = keys.index(str(author.id))
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if int(k[str(author.id)]['wallet'])<12000:
+            await message.channel.send("You lack the required funds to complete this purchase.")
+            return
+        count1+=1
+      
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if k[str(author.id)]['prestige']== 'PLAT':
+            k[str(author.id)]['prestige']= 'DIA'
+            k[str(author.id)]['wallet']-= 12000
+            author1 = str(author)
+            authorn1 = author1.split("#")
+            authorn = authorn1[0]
+            await author.edit(nick=str(authorn)+"🟦")
+          else:
+             await message.channel.send("Must be platinum to purchase this rank.")
+             return
+        count1+=1
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+
+      await message.channel.send(str(author) + " has been promoted to diamond!")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🟦")
+    
+    #Master Purchase
+    #=========================================
+    if message.content.startswith("+bmas"):
+      author = message.author
+
+      users = await get_bank_data(current_guild)
+      vals=[]
+      for i in users:
+        vals.append(i.keys())
+      keys = []
+      for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
+        keys.append(j)
+      
+      m = keys.index(str(author.id))
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if int(k[str(author.id)]['wallet'])<24000:
+            await message.channel.send("You lack the required funds to complete this purchase.")
+            return
+        count1+=1
+      
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if k[str(author.id)]['prestige']== 'DIA':
+            k[str(author.id)]['prestige']= 'MAST'
+            k[str(author.id)]['wallet']-= 24000
+            author1 = str(author)
+            authorn1 = author1.split("#")
+            authorn = authorn1[0]
+            await author.edit(nick=str(authorn)+"🟪")
+          else:
+             await message.channel.send("Must be diamond to purchase this rank.")
+             return
+        count1+=1
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+
+      await message.channel.send(str(author) + " has been promoted to master!")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🟪")
+
+    #GMaster Purchase
+    #=========================================
+    if message.content.startswith("+bgmas"):
+      author = message.author
+
+      users = await get_bank_data(current_guild)
+      vals=[]
+      for i in users:
+        vals.append(i.keys())
+      keys = []
+      for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
+        keys.append(j)
+      
+      m = keys.index(str(author.id))
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if int(k[str(author.id)]['wallet'])<50000:
+            await message.channel.send("You lack the required funds to complete this purchase.")
+            return
+        count1+=1
+      
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if k[str(author.id)]['prestige']== 'MAST':
+            k[str(author.id)]['prestige']= 'GMAST'
+            k[str(author.id)]['wallet']-= 50000
+            author1 = str(author)
+            authorn1 = author1.split("#")
+            authorn = authorn1[0]
+            await author.edit(nick=str(authorn)+"🟥")
+          else:
+             await message.channel.send("Must be master to purchase this rank.")
+             return
+        count1+=1
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+
+      await message.channel.send(str(author) + " has been promoted to grand master!")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🟥")
         
   #Other Methods
   #==================================================================================

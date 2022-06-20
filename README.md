@@ -3,7 +3,7 @@ Using python to make a discord bot that can respond to a variety of commands.
 
 Coded in *replit.com*
 
-Bot invite code: https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292057839680&scope=bot
+Bot invite code: https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=17381259328&scope=bot
 
 # 📨 Commands 📨
 * ❓ Help ❓

@@ -70,6 +70,12 @@ while True:
       #print("I have spoken.")
       return
 
+    #########################################################################################
+    #                               HELP METHODS
+    #########################################################################################
+
+    #General Help
+    #=========================================
     if message.content.startswith("+help"):
       em = discord.Embed(title = "Universal Bot Actions",description="In order to use Universal Bot make sure to use `+` before each command.", color = discord.Color.red())
       em.add_field(name = "👋 Greeting", value= "`hello`")
@@ -85,7 +91,8 @@ while True:
 
       await message.channel.send(embed=em)
 
-
+    #Rank Help
+    #=========================================
     if message.content.startswith("+rhelp"):
       emb = discord.Embed(title = "Ranks", description="These are the prestige ranks within the economy system. These ranks can be purchased with economy money.", color = discord.Color.blue())
       emb.add_field(name = "Bronze ~ Cost: 1500", value= "`bbronze`",inline = True)
@@ -99,8 +106,10 @@ while True:
       
       await message.channel.send(embed=emb)
 
-      
-  
+    #########################################################################################
+    #                               HELLO METHOD
+    #########################################################################################
+       
     if message.content.startswith("+hello"):
       value = randint(0,6)
       
@@ -124,7 +133,13 @@ while True:
         
       if value == 6:
         await message.channel.send("Yo.")
-  
+
+    #########################################################################################
+    #                               QUERY METHODS
+    #########################################################################################
+
+    #Reddit Search
+    #=========================================
     if message.content.startswith('+rquery!'):
         command = message.content
         search = command[8:len(command)]
@@ -150,52 +165,9 @@ while True:
           await message.channel.send(embed = em)
           i+=1
         await message.channel.send("https://www.reddit.com/r/"+search+"/")
-  
-    if message.content.startswith("+dadjoke"):
-      subredditd = reddit.subreddit("dadjokes")
-      all_subs= []
-      top = subredditd.hot(limit = 50)
-      
-      for submission in top:
-        all_subs.append(submission)
-      
-      random_sub = random.choice(all_subs)
-      
-      name = random_sub.title
-      body = random_sub.selftext
-      #em = discord.Embed(title = name)
-      #em = discord.Embed(selftext = body)
-      
-      
-      
-      await message.channel.send(name)
-      await message.channel.send(body)
-      
-  
-    if message.content.startswith("+meme"):
-      all_subred = []
-      subreddit1 = reddit.subreddit("dankmemes")
-      subreddit2 = reddit.subreddit("meme")
-      all_subred.append(subreddit1)
-      all_subred.append(subreddit2)
-      subreddit = random.choice(all_subred)
-      all_subs= []
-      top = subreddit.hot(limit = 50)
-      
-      for submission in top:
-        all_subs.append(submission)
-      
-      random_sub = random.choice(all_subs)
-      
-      name = random_sub.title
-      url = random_sub.url
-      em = discord.Embed(title = name)
-      
-      em.set_image(url = url)
-      
-      await message.channel.send(embed = em)
-  
-  
+
+    #Youtube Search
+    #=========================================
     if message.content.startswith("+yquery!"):
       command = message.content
       search = command[8:len(command)]
@@ -233,7 +205,65 @@ while True:
           await message.channel.send(str(c)+") "+'<http://www.youtube.com'+top_res[c-1]+">")
         j-=1
         c+=1
+
+    #########################################################################################
+    #                               JOKE METHODS
+    #########################################################################################
+
+    #Dad Jokes
+    #=========================================
+    if message.content.startswith("+dadjoke"):
+      subredditd = reddit.subreddit("dadjokes")
+      all_subs= []
+      top = subredditd.hot(limit = 50)
+      
+      for submission in top:
+        all_subs.append(submission)
+      
+      random_sub = random.choice(all_subs)
+      
+      name = random_sub.title
+      body = random_sub.selftext
+      #em = discord.Embed(title = name)
+      #em = discord.Embed(selftext = body)
+      
+      
+      
+      await message.channel.send(name)
+      await message.channel.send(body)
+      
+    #Memes
+    #=========================================
+    if message.content.startswith("+meme"):
+      all_subred = []
+      subreddit1 = reddit.subreddit("dankmemes")
+      subreddit2 = reddit.subreddit("meme")
+      all_subred.append(subreddit1)
+      all_subred.append(subreddit2)
+      subreddit = random.choice(all_subred)
+      all_subs= []
+      top = subreddit.hot(limit = 50)
+      
+      for submission in top:
+        all_subs.append(submission)
+      
+      random_sub = random.choice(all_subs)
+      
+      name = random_sub.title
+      url = random_sub.url
+      em = discord.Embed(title = name)
+      
+      em.set_image(url = url)
+      
+      await message.channel.send(embed = em)
   
+  
+    #########################################################################################
+    #                               ECONOMY METHODS
+    #########################################################################################
+
+    #Balance
+    #=========================================
     if message.content.startswith("+balance"):
       author = message.author
       await open_account(author,current_guild)
@@ -252,9 +282,8 @@ while True:
       em.add_field(name = "Bank balance", value = bank_amt)
       await message.channel.send(embed = em)
   
-  
-  
-      
+    #Funds
+    #=========================================
     if message.content.startswith("+funds!"):
       if message.author.guild_permissions.administrator:
         command = message.content
@@ -263,18 +292,39 @@ while True:
         #await open_account(author)
         #users = await get_bank_data()
         earnings = int(amt)
+
+        users = await get_bank_data(current_guild)
+        vals=[]
+        for i in users:
+          vals.append(i.keys())
+        #print(vals)
+        keys = []
+        ppl =[]
+        
+        for j in vals:
+          j = str(j)
+          j1 = j.split("'")
+          j = j1[1]
+          j2 = j.split("'")
+          j=j2[0]
+          keys.append(j)
+        #username = discord.Guild.get_member(int(keys[0]))
+        #print(keys)
+        #checking if author has funds
+        m = keys.index(str(author.id))
+
         count = 0
         f=open("bank.json",'r+')
         data = json.load(f)
         #print(data)
         #print(data['bank_details'])
-        for i in data[current_guild]: ###
+        for a in data[current_guild]: ###
           #print(i)
           #print(i[str(author.id)])
           #print(i[str(author.id)]['wallet'])
-          if count == 0:
-            i[str(author.id)]['wallet']+=earnings
-            count+=1
+          if count == m:
+            a[str(author.id)]['wallet']+=earnings
+          count+=1
   
         with open("bank.json",'w') as o:
           json.dump(data,o,indent=4)
@@ -288,14 +338,7 @@ while True:
           #for x in vals:
             #if x == str(author.id):
               #print("Passed id check")
-              #data[i[x]["wallet"]] = i[x]["wallet"] + earnings
-        
-  
-  
-  
-  
-                
-              
+              #data[i[x]["wallet"]] = i[x]["wallet"] + earnings             
             #users[str(author.id)]["wallet"] += earnings
   
         #write_json(users)
@@ -304,7 +347,9 @@ while True:
         
       else:
         await message.channel.send("Sorry, you are not authorized to use this command.")
-    #####################################################################################
+    
+    #Deposit
+    #=========================================
     if message.content.startswith("+deposit!"):
       command = message.content
       amt = command[9:len(command)]
@@ -348,7 +393,9 @@ while True:
         json.dump(data,o,indent=4)
         
       await message.channel.send("Deposit successful.")
-    ##############################################################################
+
+    #Withdraw
+    #=========================================
     if message.content.startswith("+withdraw!"):
       command = message.content
       amt = command[10:len(command)]
@@ -389,7 +436,8 @@ while True:
   
       await message.channel.send("Withdrawl successfull.")
       
-    #########################################################################################
+    #Transfer
+    #=========================================
     if "+transfer!" in message.content:
       command = message.content
       author = message.author
@@ -471,67 +519,102 @@ while True:
             
       await message.channel.send("Funds transfered successfully.")
 
+    #########################################################################################
+    #                               RANK METHODS
+    #########################################################################################
 
+    #Bronze Purchase
+    #=========================================
+    if message.content.startswith("+bbronze"):
+      author = message.author
 
+      users = await get_bank_data(current_guild)
+      vals=[]
+      for i in users:
+        vals.append(i.keys())
+      keys = []
+      for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
+        keys.append(j)
       
-  #========================================
-  
-
-  
-  #def intrest():
-    #print("Function called.")
-    #now = datetime.now()
-    
-    #current_time = now.strftime("%H:%M")
-    #print("Current Time is :", current_time)
-    #time = current_time.split(":")
-    #min = time[1]
-    #print(min)
-    #with open("bank.json","r") as f:
-        #users = json.load(f)['bank_details']
-    #print(users)
-        
-    #vals=[]
-    #for i in users:
-      #vals.append(i.keys())
-    #print(vals)
-    #keys = []
-    #ppl =[]
-          
-    #for j in vals:
-      #j = str(j)
-      #j1 = j.split("'")
-      #j = j1[1]
-      #j2 = j.split("'")
-      #j=j2[0]
-      #keys.append(j)
-    
-    #count = 0
-    #if(min == "00"):
-      #print("Passes if statement.")
-      #f=open("bank.json",'r+')
-      #data = json.load(f)
-      #for i in data['bank_details']:
-        #a = i[str(keys[count])]['bank']
-        #i[str(keys[count])]['bank'] = int(a) * 1.01
-        #count+=1
-          
-      #with open("bank.json",'w') as o:
-        #json.dump(data,o,indent=4)
-    #Timer(60,intrest).start()
-
-  #intrest()
-  #t1 = threading.Thread(target = intrest)
-  #t1.start()
-
-
-  
-  #=======================================================    
+      m = keys.index(str(author.id))
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if int(k[str(author.id)]['wallet'])<1500:
+            await message.channel.send("You lack the required funds to complete this purchase.")
+            return
+        count1+=1
       
-  
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if k[str(author.id)]['prestige']== 'unranked':
+            k[str(author.id)]['prestige']= 'BRONZE'
+            k[str(author.id)]['wallet']-= 1500
+          else:
+             await message.channel.send("Must be unranked to purchase this rank.")
+             return
+        count1+=1
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+
+      await message.channel.send(str(author) + " has been promoted to bronze!")
+    
+    #Silver Purchase
+    #=========================================
+    if message.content.startswith("+bsilver"):
+      author = message.author
+
+      users = await get_bank_data(current_guild)
+      vals=[]
+      for i in users:
+        vals.append(i.keys())
+      keys = []
+      for j in vals:
+        j = str(j)
+        j1 = j.split("'")
+        j = j1[1]
+        j2 = j.split("'")
+        j=j2[0]
+        keys.append(j)
+      
+      m = keys.index(str(author.id))
+      f=open("bank.json",'r+')
+      data = json.load(f)
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if int(k[str(author.id)]['wallet'])<3000:
+            await message.channel.send("You lack the required funds to complete this purchase.")
+            return
+        count1+=1
+      
+      count1=0
+      for k in data[current_guild]: ###
+        if((count1)==m):
+          if k[str(author.id)]['prestige']== 'BRONZE':
+            k[str(author.id)]['prestige']= 'SILVER'
+            k[str(author.id)]['wallet']-= 3000
+          else:
+             await message.channel.send("Must be BRONZE to purchase this rank.")
+             return
+        count1+=1
+      with open("bank.json",'w') as o:
+        json.dump(data,o,indent=4)
+
+      await message.channel.send(str(author) + " has been promoted to SILVER!")
+      
+         
         
-  
-  
+  #Other Methods
+  #==================================================================================
   def write_json(new_data,id, filename='bank.json'):
       with open(filename,'r+') as file:
           # First we load existing data into a dict.
@@ -559,6 +642,7 @@ while True:
       users[str(user.id)] = {}
       users[str(user.id)]["wallet"]= 5
       users[str(user.id)]["bank"]= 0
+      users[str(user.id)]["prestige"]= "unranked"
      
       write_json(users,id)
     
@@ -569,6 +653,10 @@ while True:
       users = json.load(f)[id]
     return users
 
+
+
+  #Bank Interest
+  #==================================================================================
   def interest():
     #print("Bank updated.")
       
@@ -611,14 +699,12 @@ while True:
           json.dump(data,o,indent=4)
   
   interest()
-  
+
+  #Bot Running
+  #==================================================================================
   client.run(os.getenv('TOKEN'))
 
-    
-  
-  #{"bank_details": [
-    
-  #]}
+
 
       
     

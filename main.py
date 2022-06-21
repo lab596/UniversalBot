@@ -53,7 +53,7 @@ async def on_guild_join(guild):
     json.dump(data,o,indent=4)
 
   await guild.create_role(name="Bronze",color=discord.Color.from_rgb(255,153,51))
-  await guild.create_role(name="Silver",color=discord.Color.from_rgb(192,192,192))
+  await guild.create_role(name="Silver",color=discord.Color.from_rgb(96,96,96))
   await guild.create_role(name="Gold",color=discord.Color.from_rgb(204,204,0))
   await guild.create_role(name="Platinum",color=discord.Color.from_rgb(0,76,153))
   await guild.create_role(name="Diamond",color=discord.Color.from_rgb(0,255,255))
@@ -95,7 +95,7 @@ while True:
       
 
       
-      em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292393351232&scope=bot) • [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
+      em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292527568960&scope=bot) • [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
 
       em.set_footer(text="For detailed info about each command please visit the 'Commands' link above. Use `rhelp` to have the ranks explained.")
 

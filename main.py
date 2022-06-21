@@ -9,6 +9,8 @@ import json
 #from datetime import datetime
 #import threading
 from threading import Timer
+from discord import Color
+from discord.utils import get
 
 
 
@@ -50,6 +52,14 @@ async def on_guild_join(guild):
   with open("bank.json",'w') as o:
     json.dump(data,o,indent=4)
 
+  await guild.create_role(name="Bronze",color=discord.Color.from_rgb(255,153,51))
+  await guild.create_role(name="Silver",color=discord.Color.from_rgb(192,192,192))
+  await guild.create_role(name="Gold",color=discord.Color.from_rgb(204,204,0))
+  await guild.create_role(name="Platinum",color=discord.Color.from_rgb(0,76,153))
+  await guild.create_role(name="Diamond",color=discord.Color.from_rgb(0,255,255))
+  await guild.create_role(name="Master",color=discord.Color.from_rgb(127,0,255))
+  await guild.create_role(name="Grand Master",color=discord.Color.from_rgb(204,0,0))
+
 keep_alive()
 while True:
   
@@ -85,7 +95,7 @@ while True:
       
 
       
-      em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=17381259328&scope=bot) • [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
+      em.add_field(name="Hub",value="[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=982335220701356072&permissions=292393351232&scope=bot) • [Support Server](https://discord.gg/dYxG8BgZ) • [Commands](https://github.com/lab596/UniversalBot/blob/main/README.md)")
 
       em.set_footer(text="For detailed info about each command please visit the 'Commands' link above. Use `rhelp` to have the ranks explained.")
 
@@ -562,6 +572,8 @@ while True:
             authorn1 = author1.split("#")
             authorn = authorn1[0]
             await author.edit(nick=str(authorn)+"🟫")
+            role = get(message.guild.roles, name='Bronze')
+            await author.add_roles(role)
           else:
              await message.channel.send("Must be unranked to purchase this rank.")
              return
@@ -610,6 +622,10 @@ while True:
             authorn1 = author1.split("#")
             authorn = authorn1[0]
             await author.edit(nick=str(authorn)+"⬜")
+            role1 = get(message.guild.roles, name='Bronze')
+            await author.remove_roles(role1)
+            role = get(message.guild.roles, name='Silver')
+            await author.add_roles(role)
           else:
              await message.channel.send("Must be bronze to purchase this rank.")
              return
@@ -659,6 +675,10 @@ while True:
             authorn1 = author1.split("#")
             authorn = authorn1[0]
             await author.edit(nick=str(authorn)+"🟨")
+            role1 = get(message.guild.roles, name='Silver')
+            await author.remove_roles(role1)
+            role = get(message.guild.roles, name='Gold')
+            await author.add_roles(role)
           else:
              await message.channel.send("Must be silver to purchase this rank.")
              return
@@ -708,6 +728,10 @@ while True:
             authorn1 = author1.split("#")
             authorn = authorn1[0]
             await author.edit(nick=str(authorn)+"⬛")
+            role1 = get(message.guild.roles, name='Gold')
+            await author.remove_roles(role1)
+            role = get(message.guild.roles, name='Platinum')
+            await author.add_roles(role)
           else:
              await message.channel.send("Must be gold to purchase this rank.")
              return
@@ -757,6 +781,10 @@ while True:
             authorn1 = author1.split("#")
             authorn = authorn1[0]
             await author.edit(nick=str(authorn)+"🟦")
+            role1 = get(message.guild.roles, name='Platinum')
+            await author.remove_roles(role1)
+            role = get(message.guild.roles, name='Diamond')
+            await author.add_roles(role)
           else:
              await message.channel.send("Must be platinum to purchase this rank.")
              return
@@ -806,6 +834,10 @@ while True:
             authorn1 = author1.split("#")
             authorn = authorn1[0]
             await author.edit(nick=str(authorn)+"🟪")
+            role1 = get(message.guild.roles, name='Diamond')
+            await author.remove_roles(role1)
+            role = get(message.guild.roles, name='Master')
+            await author.add_roles(role)
           else:
              await message.channel.send("Must be diamond to purchase this rank.")
              return
@@ -855,6 +887,10 @@ while True:
             authorn1 = author1.split("#")
             authorn = authorn1[0]
             await author.edit(nick=str(authorn)+"🟥")
+            role1 = get(message.guild.roles, name='Master')
+            await author.remove_roles(role1)
+            role = get(message.guild.roles, name='Grand Master')
+            await author.add_roles(role)
           else:
              await message.channel.send("Must be master to purchase this rank.")
              return

@@ -60,10 +60,17 @@ async def on_guild_join(guild):
   await guild.create_role(name="Master",color=discord.Color.from_rgb(127,0,255))
   await guild.create_role(name="Grand Master",color=discord.Color.from_rgb(204,0,0))
 
+people = []
 keep_alive()
 while True:
-  
 
+    
+
+  
+  
+  
+  
+  
   
   @client.event
   async def on_message(message):
@@ -76,9 +83,55 @@ while True:
       #await message.channel.send("Bro stop talking.")
       #await message.channel.send("No one asked.")
     
+    
     if message.author == client.user:
       #print("I have spoken.")
       return
+
+    if message.content.startswith("+daily"):
+      #print(people)
+      author = message.author
+      used = True
+      for x in people:
+        if x == str(author.id):
+          used = False
+      if used == True:
+        await message.channel.send("You have already used you 1 daily from Universal Bot.")
+      else:
+        value = randint(0,1500)
+
+        users = await get_bank_data(current_guild)
+        vals=[]
+        for i in users:
+          vals.append(i.keys())
+        keys = []
+        for j in vals:
+          j = str(j)
+          j1 = j.split("'")
+          j = j1[1]
+          j2 = j.split("'")
+          j=j2[0]
+          keys.append(j)
+        
+        m = keys.index(str(author.id))
+        f=open("bank.json",'r+')
+        data = json.load(f)
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+= value
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+
+        for x in people:
+          if x == str(author.id):
+            people.remove(x)
+        #print(people)
+        await message.channel.send("You have gained " + str(value) + " from your daily today!" )
+
+        
+        
 
     #########################################################################################
     #                               HELP METHODS
@@ -91,7 +144,7 @@ while True:
       em.add_field(name = "👋 Greeting", value= "`hello`")
       em.add_field(name = "🤣 Jokes", value= "`meme`  ``\ndadjoke``")
       em.add_field(name = "❓ Query", value= "`yquery!(search)`  ``\nrquery!(search)``")
-      em.add_field(name = "💵 Economy (for Ranks)", value= "``balance``  ``\nfunds!(amount)`` ``\ndeposit!(amount)`` ``\nwithdraw!(amount)`` ``\n(user)transfer!(amount)``",inline=False)
+      em.add_field(name = "💵 Economy (for Ranks)", value= "``balance``  ``\nfunds!(amount)`` ``\ndeposit!(amount)`` ``\nwithdraw!(amount)`` ``\n(user)transfer!(amount)`` ``\nchance`` ``\ndaily``",inline=False)
       
 
       
@@ -112,7 +165,8 @@ while True:
       emb.add_field(name = "Diamond ~ Cost: 12000", value= "`bdia`",inline = True)
       emb.add_field(name = "Master ~ Cost: 24000", value= "`bmas`",inline = True)
       emb.add_field(name = "Grand Master ~ Cost: 50000", value= "`bgmas`",inline = True)
-      emb.set_image(url="https://www.simpleimageresizer.com/_uploads/photos/539dd618/image_1_20.png")
+      emb.add_field(name = "Lottery Command", value= "`chance`",inline = True)
+      emb.set_footer(text="You gain money everyday through interest. You can also gain or lose money using the chance command.")
       
       await message.channel.send(embed=emb)
 
@@ -934,7 +988,7 @@ while True:
             return
         count1+=1
       
-      value = randint(0,11)
+      value = randint(0,43)
       #print(value)
       if (value == 0):
         count1=0
@@ -967,8 +1021,7 @@ while True:
           count1+=1
         with open("bank.json",'w') as o:
           json.dump(data,o,indent=4)
-        await message.channel.send("Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are
-                                   otherwise entitled")
+        await message.channel.send("Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled")
         await message.channel.send("Unfortunately for you, I own that railroad. You owe me $100.")
         await message.channel.send("$100 dollars ; loss")
 
@@ -1073,8 +1126,358 @@ while True:
           json.dump(data,o,indent=4)
         await message.channel.send("Emotional Damage.")
         await message.channel.send("$10 dollars ; loss")
-      
-      
+
+      if (value == 12):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=15
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Pay poor tax of $15")
+        await message.channel.send("$15 dollars ; loss")
+
+      if (value == 13):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=15
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Life insurance matures.")
+        await message.channel.send("$50 dollars ; gain")
+
+      if (value == 14):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=10
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You donate your birthday money to a community center. Keep a little for yourself. COLLECT $10.")
+        await message.channel.send("$10 dollars ; gain")
+
+      if (value == 15):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=10
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You volunteered at a blood drive. There were free cookies! COLLECT $10.")
+        await message.channel.send("$10 dollars ; gain")
+
+      if (value == 16):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=100
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You spend the day playing games with kids at a local children’s hospital. COLLECT $100.")
+        await message.channel.send("$100 dollars ; gain")
+
+      if (value == 17):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You buy a few bags of cookies from that school bake sale. Yum! PAY $50.")
+        await message.channel.send("$50 dollars ; loss")
+
+      if (value == 18):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You didn’t shop local! PAY $50")
+        await message.channel.send("$50 dollars ; loss")
+
+      if (value == 19):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Your cousin forgot their wallet! You happily pay for dinner. PAY $50.")
+        await message.channel.send("$50 dollars ; loss")
+
+      if (value == 20):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=15
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You do someones homework for them. They pay you.")
+        await message.channel.send("$15 dollars ; gain")
+
+      if (value == 21):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You set aside time every week to hang out with your elderly neighbor – you’ve heard some amazing stories! COLLECT $100")
+        await message.channel.send("$100 dollars ; gain")
+
+      if (value == 22):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=20
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Meow! You knit cozy sweaters for the hairless cats at your local animal shelter. COLLECT $20.")
+        await message.channel.send("$20 dollars ; gain")
+
+      if (value == 23):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=100
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You volunteer to run the social media accounts for a non-profit art center, and you meet some pretty talented people! COLLECT $100.")
+        await message.channel.send("$100 dollars ; gain")
+
+      if (value == 24):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=25
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You organize a bake sale for your local school. COLLECT $25.")
+        await message.channel.send("$25 dollars ; gain")
+
+      if (value == 25):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=100
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Your mom throws her slipper at you. You incur emotional damage.")
+        await message.channel.send("$100 dollars ; loss")
+           
+      if (value == 26):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You decide to gamble. The luck never favors you!")
+        await message.channel.send("$50 dollars ; loss")
+
+      if (value == 27):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Fortune favors the brave. Luckily you seem brave.")
+        await message.channel.send("$50 dollars ; gain")
+
+      if (value == 28):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=1000
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You win the lottery!")
+        await message.channel.send("$1000 dollars ; gain")
+
+      if (value == 29):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=150
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("A monster eats your fammily. They cost $50 each.")
+        await message.channel.send("$150 dollars ; loss")
+
+      if (value == 30):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=20
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You smell.")
+        await message.channel.send("$20 dollars ; loss")
+
+      if (value == 31):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You get promoted to boss. But the party costs some mola.")
+        await message.channel.send("$50 dollars ; loss")
+
+      if (value == 32):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Mario appears and hands you a crisp $50.")
+        await message.channel.send("$50 dollars ; gain")
+
+      if (value == 33):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=20
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You get eaten.")
+        await message.channel.send("$20 dollars ; loss")
+
+      if (value == 34):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You rob a bank.")
+        await message.channel.send("$50 dollars ; gain")
+
+      if (value == 35):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=25
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("I rob you.")
+        await message.channel.send("$25 dollars ; loss")
+
+      if (value == 36):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=150
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("The pope himself blesses your dog water and turns it into holy water. You sell it.")
+        await message.channel.send("$150 dollars ; gain")
+
+      if (value == 37):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Lebron James dunks on you.")
+        await message.channel.send("$50 dollars ; loss")
+
+      if (value == 38):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=25
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Why do you look like that?")
+        await message.channel.send("$25 dollars ; loss")
+
+      if (value == 39):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=100
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("A seagull drops a gold brick on your head")
+        await message.channel.send("$100 dollars ; gain")
+
+      if (value == 40):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("Lazerbeam hits you with his lazer beam.")
+        await message.channel.send("$50 dollars ; loss")
+
+      if (value == 41):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']+=50
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You like cheese curds.")
+        await message.channel.send("$50 dollars ; gain")
+
+      if (value == 42):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=100
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You play Fortnite?")
+        await message.channel.send("$100 dollars ; loss")
+
+      if (value == 43):
+        count1=0
+        for k in data[current_guild]: ###
+          if((count1)==m):
+            k[str(author.id)]['wallet']-=1000
+          count1+=1
+        with open("bank.json",'w') as o:
+          json.dump(data,o,indent=4)
+        await message.channel.send("You looked at me weird.")
+        await message.channel.send("$1000 dollars ; loss")
 
       
       
@@ -1167,6 +1570,39 @@ while True:
           json.dump(data,o,indent=4)
   
   interest()
+
+  #########################################################################################
+  #                               Daily METHODS
+  #########################################################################################
+  def daily():
+    Timer(86400,daily).start()
+    with open("bank.json","r+") as f:
+      guilds = json.load(f)
+    #print("I am here")
+    guild = []
+    for i in guilds.keys():
+      guild.append(i)
+    
+    for j in guild:
+      pkeys = []
+      with open("bank.json","r+") as f:
+        users = json.load(f)[str(j)]
+      for l in users:
+        pkeys.append(l.keys())
+        #print(j)
+        keys = []
+        for k in pkeys:
+          k = str(k)
+          k1 = k.split("'")
+          k = k1[1]
+          k2 = k.split("'")
+          k=k2[0]
+          keys.append(k)
+  
+        for i in keys:
+          if(not(i in people)):
+            people.append(i)
+  daily()
 
   #Bot Running
   #==================================================================================

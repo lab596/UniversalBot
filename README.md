@@ -53,3 +53,11 @@ Bot invite code: https://discord.com/api/oauth2/authorize?client_id=982335220701
  * 💵 Withdraw 💵
    - Keyword: "+withdraw!(amount)"
    - Action: Moves money from bank to wallet in orfer to allow for purchases 
+ 
+  * 🃏 Chance 🃏
+   - Keyword: "+chance"
+   - Action: Calls a random action that can either give or take money from one's account 
+
+ * 💰 Daily 💰
+   - Keyword: "+daily"
+   - Action: Gives a random amount of money. This action call only be called once everyday from every user. (*Can only use 1 even within muiltiple servers) 

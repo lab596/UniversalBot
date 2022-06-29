@@ -625,7 +625,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"🟫")
+            await author.edit(nick=str(authorn)+"🥮")
             role = get(message.guild.roles, name='Bronze')
             await author.add_roles(role)
           else:
@@ -636,7 +636,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to bronze!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"🟫")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🥮")
     #Silver Purchase
     #=========================================
     if message.content.startswith("+bsilver"):
@@ -675,7 +675,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"⬜")
+            await author.edit(nick=str(authorn)+"🔗")
             role1 = get(message.guild.roles, name='Bronze')
             await author.remove_roles(role1)
             role = get(message.guild.roles, name='Silver')
@@ -688,7 +688,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to silver!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"⬜")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🔗")
 
     #Gold Purchase
     #=========================================
@@ -728,7 +728,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"🟨")
+            await author.edit(nick=str(authorn)+"⚜️")
             role1 = get(message.guild.roles, name='Silver')
             await author.remove_roles(role1)
             role = get(message.guild.roles, name='Gold')
@@ -741,7 +741,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to gold!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"🟨")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"⚜️")
     
     #Plat Purchase
     #=========================================
@@ -781,7 +781,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"⬛")
+            await author.edit(nick=str(authorn)+"🛡️")
             role1 = get(message.guild.roles, name='Gold')
             await author.remove_roles(role1)
             role = get(message.guild.roles, name='Platinum')
@@ -794,7 +794,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to platinum!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"⬛")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🛡️")
     
     #Dia Purchase
     #=========================================
@@ -834,7 +834,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"🟦")
+            await author.edit(nick=str(authorn)+"💎")
             role1 = get(message.guild.roles, name='Platinum')
             await author.remove_roles(role1)
             role = get(message.guild.roles, name='Diamond')
@@ -847,7 +847,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to diamond!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"🟦")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"💎")
     
     #Master Purchase
     #=========================================
@@ -887,7 +887,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"🟪")
+            await author.edit(nick=str(authorn)+"🔮")
             role1 = get(message.guild.roles, name='Diamond')
             await author.remove_roles(role1)
             role = get(message.guild.roles, name='Master')
@@ -900,7 +900,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to master!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"🟪")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🔮")
 
     #GMaster Purchase
     #=========================================
@@ -940,7 +940,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"🟥")
+            await author.edit(nick=str(authorn)+"🩸")
             role1 = get(message.guild.roles, name='Master')
             await author.remove_roles(role1)
             role = get(message.guild.roles, name='Grand Master')
@@ -953,7 +953,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to grand master!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"🟥")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🩸")
 
     #########################################################################################
     #                               Chance METHODS

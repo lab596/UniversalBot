@@ -11,6 +11,7 @@ import json
 from threading import Timer
 #from discord import Color
 from discord.utils import get
+from subprocess import run
 
 
 
@@ -625,7 +626,7 @@ while True:
             author1 = str(author)
             authorn1 = author1.split("#")
             authorn = authorn1[0]
-            await author.edit(nick=str(authorn)+"🥮")
+            await author.edit(nick=str(authorn)+"🥉")
             role = get(message.guild.roles, name='Bronze')
             await author.add_roles(role)
           else:
@@ -1606,7 +1607,9 @@ while True:
 
   #Bot Running
   #==================================================================================
-  client.run(os.getenv('TOKEN'))
+  try: client.run(os.getenv('TOKEN')) 
+
+  except: run(['kill','1'])
 
 
 

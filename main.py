@@ -54,7 +54,7 @@ async def on_guild_join(guild):
     json.dump(data,o,indent=4)
 
   await guild.create_role(name="Bronze",color=discord.Color.from_rgb(255,153,51))
-  await guild.create_role(name="Silver",color=discord.Color.from_rgb(96,96,96))
+  await guild.create_role(name="Silver",color=discord.Color.from_rgb(242,242,242))
   await guild.create_role(name="Gold",color=discord.Color.from_rgb(204,204,0))
   await guild.create_role(name="Platinum",color=discord.Color.from_rgb(0,76,153))
   await guild.create_role(name="Diamond",color=discord.Color.from_rgb(0,255,255))
@@ -62,6 +62,7 @@ async def on_guild_join(guild):
   await guild.create_role(name="Grand Master",color=discord.Color.from_rgb(204,0,0))
 
 people = []
+chanceusers = []
 keep_alive()
 while True:
 
@@ -443,7 +444,7 @@ while True:
       count1=0
       for k in data[current_guild]: ###
         if((count1)==m):
-          if int(k[str(author.id)]['wallet'])<int(amt):
+          if int(k[str(author.id)]['wallet'])<int(amt) or (int(amt)<0):
             await message.channel.send("You lack the required funds to complete this deposit.")
             return
         count1+=1
@@ -485,7 +486,7 @@ while True:
       count1=0
       for k in data[current_guild]: ###
         if((count1)==m):
-          if int(k[str(author.id)]['bank'])<int(amt):
+          if int(k[str(author.id)]['bank'])<int(amt) or (int(amt)<0):
             await message.channel.send("You lack the required funds to complete this withdrawl.")
             return
         count1+=1
@@ -637,7 +638,7 @@ while True:
         json.dump(data,o,indent=4)
 
       await message.channel.send(str(author) + " has been promoted to bronze!")
-      await message.channel.send("You have been renamed to "+ str(authorn)+"🥮")
+      await message.channel.send("You have been renamed to "+ str(authorn)+"🥉")
     #Silver Purchase
     #=========================================
     if message.content.startswith("+bsilver"):
@@ -959,12 +960,22 @@ while True:
     #########################################################################################
     #                               Chance METHODS
     #########################################################################################
-
     #Chance
     #=========================================
     if message.content.startswith("+chance"):
       author = message.author
 
+      c = 0
+      for user in chanceusers:
+        if(user == author):
+          c +=1
+
+      if(c>5):
+        await message.channel.send("You have reached your chance limit.")
+        return
+
+      chanceusers.append(author)
+      
       users = await get_bank_data(current_guild)
       vals=[]
       for i in users:
@@ -1603,6 +1614,7 @@ while True:
         for i in keys:
           if(not(i in people)):
             people.append(i)
+    chanceuser = []
   daily()
 
   #Bot Running
